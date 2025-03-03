@@ -1,23 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/03 10:58:53 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/03 11:26:32 by vvoronts         ###   ########.fr       */
+/*   Created: 2025/03/03 16:41:17 by vvoronts          #+#    #+#             */
+/*   Updated: 2025/03/03 19:18:32 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	validate(int argc, char **argv)
+void	errexit(int err, const char *msg, t_ctx *dining)
 {
-	(void)argv;
-	if (argc < 5 || argc > 6)
-	{
-		write(2, "Error: wrong number of arguments\n", 33);
-		exit(1);
-	}
+	int	std;
+
+	if (err != SUCCESS)
+		std = 2;
+	else
+		std = 0;
+	writestd(msg, std);
+	destroy(dining);
+	exit(err);
 }

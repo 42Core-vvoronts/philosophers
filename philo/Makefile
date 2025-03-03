@@ -6,7 +6,7 @@
 #    By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 10:32:04 by vvoronts          #+#    #+#              #
-#    Updated: 2025/03/03 11:11:48 by vvoronts         ###   ########.fr        #
+#    Updated: 2025/03/03 19:28:07 by vvoronts         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,14 +18,30 @@ RM					=	rm -rf
 # Name of the output library
 NAME				=	philo
 
+# Source directories
+VPATH				=	\
+						./src/:\
+						./utils/:\
+
+# Include directories
+INCLUDE_DIRS		=	\
+						./include \
+
 # Source files
 SRC 				=	\
 						main.c \
-						parser.c \
 						initer.c \
 						simulator.c \
-						cleaner.c \
-						utils.c \
+						monitor.c \
+						routine.c \
+						destroyer.c \
+						\
+						atoi.c \
+						error.c \
+						memalloc.c \
+						print.c \
+						strlen.c \
+						time.c \
 						\
 
 # Object and Dependency files
@@ -43,6 +59,7 @@ all: lib $(NAME)
 # Link mandatory object files
 $(NAME): $(OBJ)
 	@echo "$(YELLOW)Building $(NAME)..."
+	@$(CC) $(OBJ) -o $@
 	@echo "$(GREEN)$(NAME) has been built"
 
 # Compile mandatory object files
@@ -59,6 +76,7 @@ dep_dir:
 
 # Clean build files
 clean:
+	@echo "$(YELLOW)Cleaning $(NAME)..."
 	@$(RM) obj
 	@$(RM) dep
 	@echo "$(RED)$(NAME) has been cleaned$(RESET)"
