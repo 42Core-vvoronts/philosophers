@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/05 13:51:02 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/05 14:19:11 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ typedef struct s_thread
 	pthread_mutex_t		rightlock;
 	int					id;
 	int					ate;
+	bool				starve;
 	size_t				t_born;
 	int					t_meal;
 	t_ctx				*ctx;

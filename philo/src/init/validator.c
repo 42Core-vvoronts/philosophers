@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:46:13 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/05 11:46:48 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:39:52 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	validate(char **argv, int argc)
 		msg = "Invalid time to eat";
 	else if (ft_atoi(argv[4]) <= 0)
 		msg = "Invalid time to sleep";
-	else if (argv[5] && (ft_atoi(argv[5]) < 0))
+	else if (argv[5] && (ft_atoi(argv[5]) <= 0))
 		msg = "Invalid number of times each philosopher must eat";
 	if (msg)
 		errexit(FAIL, msg, NULL);

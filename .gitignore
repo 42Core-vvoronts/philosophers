@@ -13,6 +13,7 @@
 
 # tests
 LazyPhilosophersTester
+tests
 
 # trashy
 .DS_store

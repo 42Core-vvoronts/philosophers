@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/05 13:43:25 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/05 15:04:25 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,16 +29,14 @@ static void	join_thread(pthread_t thread, t_ctx *ctx)
 }
 
 /**
- * @brief Simulate the dining philosophers
+ * @brief Creates and joins threads for waiter and each philosopher 
  * 
  * @param ctx Context of programm
- * 
- * Creates and joins threads for waiter and each philosopher 
  */
 void	simulate(t_ctx **ctx)
 {
-	int			i;
 	t_thread	*philo;
+	int			i;
 
 	i = 0;
 	create_thread(&(*ctx)->waiter, monitor, *ctx, *ctx);
