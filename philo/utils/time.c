@@ -6,27 +6,40 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:56:16 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/03 18:56:49 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:32:03 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_usleep(size_t milliseconds)
+/**
+ * @brief Wrapper for gettimeofday()
+
+ * @return size_t Current time in milliseconds
+ */
+size_t	gettime(void)
+{
+	size_t			time;
+	struct timeval	rawtime;
+
+	if (gettimeofday(&rawtime, NULL) == -1)
+		errexit(FAIL, "gettimeofday() error\n", NULL);
+	time = rawtime.tv_sec * 1000 + rawtime.tv_usec / 1000;
+	return (time);
+}
+/**
+ * @brief Wrapper for usleep()
+ * 
+ * @param time Time to wait in milliseconds
+ * 
+ */
+void	waittime(size_t time)
 {
 	size_t	start;
+	size_t	end;
 
-	start = get_current_time();
-	while ((get_current_time() - start) < milliseconds)
-		usleep(500);
-	return (0);
-}
-
-size_t	get_current_time(void)
-{
-	struct timeval	time;
-
-	if (gettimeofday(&time, NULL) == -1)
-		write(2, "gettimeofday() error\n", 22);
-	return (time.tv_sec * 1000 + time.tv_usec / 1000);
+	start = gettime();
+	end = start + time;
+	while (gettime() < end)
+		usleep(100);
 }
