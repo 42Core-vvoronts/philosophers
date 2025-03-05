@@ -1,0 +1,22 @@
+# IDE
+.vscode
+
+# program
+philo
+
+# objects and dependencies
+**/dep/*
+**/obj/*
+*.d
+*.o
+*.a
+
+# tests
+LazyPhilosophersTester
+
+# trashy
+.DS_store
+*.txt
+*.py
+*.lldb
+*.png
