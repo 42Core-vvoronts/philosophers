@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:33:37 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/03 18:08:46 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/05 11:26:33 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,11 @@
  */
 int main(int argc, char **argv)
 {
-	t_ctx	*dining;
+	t_ctx	*ctx;
 
-	init(&dining, argc, argv);
-	// simulate(dining);
-	destroy(dining);
+	validate(argv, argc);
+	init(&ctx, argv);
+	simulate(&ctx);
+	destroy(&ctx);
 	return (0);
 }

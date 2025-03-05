@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/03 19:46:55 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:52:43 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,66 +14,41 @@
 
 void	sleeping(t_thread *philo)
 {
-	printf("%d: is sleeping\n", philo->id);
-	usleep(philo->time_to_sleep);
-
+	writestatus(philo, "is sleeping");
+	waittime(philo->ctx->t_sleep);
 }
 void	thinking(t_thread *philo)
 {
-	printf("%d: is thinking\n", philo->id);
+	writestatus(philo, "is thinking");
 }
 
 void	eating(t_thread *philo)
 {
-	// Lock forks
-	pthread_mutex_lock(&philo->rfork);
-	printf("%d: has taken right fork\n", philo->id);
-
-	if (philo->dining->number == 1)
-	{
-		pthread_mutex_unlock(&philo->rfork);
-		philo->dead = true;
-		usleep(philo->time_to_die);
-		return ;
-	}
-	pthread_mutex_lock(&philo->lfork);
-	printf("%d: has taken left fork\n", philo->id);
-
-	pthread_mutex_lock(&philo->meallock);
-	printf("%d: is eating\n", philo->id);
-	usleep(philo->time_to_eat);
-	philo->last = get_current_time();
-	philo->meals++;
-	pthread_mutex_unlock(&philo->meallock);
+	mxlock(&philo->leftlock, philo->ctx);
+	writestatus(philo, "has taken a fork");
+	mxlock(&philo->rightlock, philo->ctx);
+	writestatus(philo, "has taken a fork");
 	
-	// Unlock forks
-	pthread_mutex_unlock(&philo->rfork);
-	pthread_mutex_unlock(&philo->lfork);
+	writestatus(philo, "is eating");
+	waittime(philo->ctx->t_eat);
+
+	mxunlock(&philo->leftlock, philo->ctx);
+	mxunlock(&philo->rightlock, philo->ctx);
 }
 
-bool	everyone_alive(t_ctx *dining)
+bool   everyone_alive(t_ctx *ctx)
 {
-	t_thread	*philo;
-
-	philo = dining->philos;
-	pthread_mutex_lock(&philo->deadlock);
-	if (philo->dead == true)
-	{
-		pthread_mutex_unlock(&philo->deadlock);
-		return (false);	
-	}
-	pthread_mutex_unlock(&philo->deadlock);
-	return (true);
+	return (ctx);
 }
 
 void	*routine(void *arg)
 {
 	t_thread	*philo;
-	t_ctx		*dining;
+	t_ctx		*ctx;
 
 	philo = (t_thread *)arg;
-	dining = philo->dining;
-	while (everyone_alive(dining)) 
+	ctx = philo->ctx;
+	while (everyone_alive(ctx)) 
 	{
 		eating(philo);
 		sleeping(philo);
