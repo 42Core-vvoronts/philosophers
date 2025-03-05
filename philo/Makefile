@@ -6,7 +6,7 @@
 #    By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 10:32:04 by vvoronts          #+#    #+#              #
-#    Updated: 2025/03/05 13:42:17 by vvoronts         ###   ########.fr        #
+#    Updated: 2025/03/05 14:09:14 by vvoronts         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,6 +21,9 @@ NAME				=	philo
 # Source directories
 VPATH				=	\
 						./src/:\
+						./src/init:\
+						./src/simulate:\
+						./src/destroy:\
 						./utils/:\
 
 # Include directories
