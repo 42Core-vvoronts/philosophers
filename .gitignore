@@ -1,8 +1,8 @@
 # IDE
 .vscode
 
-# program
-philo
+# executable
+/philo/philo
 
 # objects and dependencies
 **/dep/*
