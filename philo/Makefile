@@ -6,7 +6,7 @@
 #    By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 10:32:04 by vvoronts          #+#    #+#              #
-#    Updated: 2025/03/03 19:28:07 by vvoronts         ###   ########.fr        #
+#    Updated: 2025/03/05 13:42:17 by vvoronts         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ INCLUDE_DIRS		=	\
 # Source files
 SRC 				=	\
 						main.c \
+						validator.c \
 						initer.c \
 						simulator.c \
 						monitor.c \
@@ -42,6 +43,7 @@ SRC 				=	\
 						print.c \
 						strlen.c \
 						time.c \
+						mutex.c \
 						\
 
 # Object and Dependency files
