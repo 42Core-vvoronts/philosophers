@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/03 19:47:47 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/05 13:51:02 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,51 +30,54 @@ typedef struct s_thread t_thread;
 
 typedef struct s_thread
 {
-	int					id;
 	pthread_t			thread;
-	pthread_mutex_t		lfork;
-	pthread_mutex_t		rfork;
-	bool				eat;
-	bool				dead;
-	int					meals;
-	int					musteat;
-	int					last;
-	int					time_to_die;
-	int					time_to_eat;
-	int					time_to_sleep;
-	t_ctx				*dining;
-	pthread_mutex_t		meallock;
-	pthread_mutex_t		writelock;
-	pthread_mutex_t		deadlock;
+	pthread_mutex_t		leftlock;
+	pthread_mutex_t		rightlock;
+	int					id;
+	int					ate;
+	size_t				t_born;
+	int					t_meal;
+	t_ctx				*ctx;
 }	t_thread;
 
 typedef struct s_ctx
 {
 	pthread_t			waiter;
 	t_thread			*philos;
-	int					number;
-	bool				death;
-	pthread_mutex_t		meallock;
-	pthread_mutex_t		writelock;
 	pthread_mutex_t		deadlock;
-	size_t				start;
+	pthread_mutex_t		meallock;
+	pthread_mutex_t		lock;
+	bool				death;
+	int					n_ph;
+	int					meals;
+	size_t				t_die;
+	size_t				t_eat;
+	size_t				t_sleep;
 }	t_ctx;
 
 // programm
-void	init(t_ctx **dining, int argc, char **argv);
+void	validate(char **argv, int argc);
+void	init(t_ctx **ctx, char **argv);
+void	init_philo(t_thread *philo, t_ctx *ctx, int i);
+void	simulate(t_ctx **ctx);
+void	destroy(t_ctx **ctx);
+//
 void	*routine(void *arg);
 void	*monitor(void *arg);
-
+//
 
 // utils
+void	mxinit(pthread_mutex_t *lock, t_ctx *ctx);
+void	mxdestroy(pthread_mutex_t *lock, t_ctx *ctx);
+void	mxlock(pthread_mutex_t *lock, t_ctx *ctx);
+void	mxunlock(pthread_mutex_t *lock, t_ctx *ctx);
+void	writestatus(t_thread *philo, char *str);
 void	writestd(const char *msg, int std);
-void	errexit(int err, const char *msg, t_ctx *dining);
+void	errexit(int err, const char *msg, t_ctx **ctx);
+size_t	gettime(void);
+void	waittime(size_t time);
+void	*memalloc(size_t size, t_ctx *ctx);
 int		ft_atoi(const char *str);
 size_t	ft_strlen(const char *str);
-void	*memalloc(size_t size, t_ctx *dining);
-void	destroy(t_ctx *dining);
-
-size_t	get_current_time(void);
-int	ft_usleep(size_t milliseconds);
 
 #endif
