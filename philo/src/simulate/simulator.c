@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/06 19:19:24 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:09:54 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	simulate(t_ctx **ctx)
 		create_thread(&philo->thread, routine, philo, *ctx);
 		i++;
 	}
+	(*ctx)->ready = true;
 	i = 0;
 	while (i < (*ctx)->n_ph)
 	{

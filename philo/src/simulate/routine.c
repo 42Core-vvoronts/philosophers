@@ -6,11 +6,18 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 08:57:50 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:11:11 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	sync_threads(t_ctx *ctx)
+{
+	while (ctx->ready == false)
+		usleep(100);
+}
+
 
 void	sleeping(t_thread *philo)
 {
@@ -70,6 +77,7 @@ void	*routine(void *arg)
 
 	philo = (t_thread *)arg;
 	ctx = philo->ctx;
+	sync_threads(ctx);
 	while (everyone_alive(ctx)) 
 	{
 		eating(philo);

@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 09:07:48 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:15:52 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 # define PHILO_H
 
 # include <string.h>     // memset
-# include <stdio.h>      // printf
+# include <stdio.h>      // prlongf
 # include <stdlib.h>     // malloc, free
 # include <unistd.h>     // write, usleep
 # include <sys/time.h>   // gettimeofday
@@ -33,10 +33,10 @@ typedef struct s_thread
 	pthread_t			thread;
 	pthread_mutex_t		*left;
 	pthread_mutex_t		*right;
-	int					id;
-	int					ate;
+	long				id;
+	long				ate;
+	long				t_meal;
 	bool				eating;
-	size_t				t_meal;
 	t_ctx				*ctx;
 }	t_thread;
 
@@ -49,11 +49,13 @@ typedef struct s_ctx
 	pthread_mutex_t		deadlock;
 	pthread_mutex_t		writelock;
 	bool				death;
-	int					n_ph;
-	int					meals;
-	size_t				t_die;
-	size_t				t_eat;
-	size_t				t_sleep;
+	bool				ready;
+	long				n_ph;
+	long				meals;
+	long				t_born;
+	long				t_die;
+	long				t_eat;
+	long				t_sleep;
 }	t_ctx;
 
 // programm
@@ -75,10 +77,10 @@ void	mxunlock(pthread_mutex_t *lock, t_ctx *ctx);
 void	writestatus(t_thread *philo, char *str);
 void	writestd(const char *msg, int std);
 void	errexit(int err, const char *msg, t_ctx **ctx);
-size_t	gettime(void);
-void	waittime(size_t time);
-void	*memalloc(size_t size, t_ctx *ctx);
-int		ft_atoi(const char *str);
-size_t	ft_strlen(const char *str);
+long	gettime(void);
+void	waittime(long time);
+void	*memalloc(long size, t_ctx *ctx);
+long	ft_atoi(const char *str);
+long	ft_strlen(const char *str);
 
 #endif

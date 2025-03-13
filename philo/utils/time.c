@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:56:16 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/06 17:07:20 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:14:30 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 /**
  * @brief Wrapper for gettimeofday()
 
- * @return size_t Current time in milliseconds
+ * @return long Current time in milliseconds
  */
-size_t	gettime(void)
+long	gettime(void)
 {
-	size_t			time;
+	long			time;
 	struct timeval	rawtime;
 
 	if (gettimeofday(&rawtime, NULL) == -1)
@@ -33,10 +33,10 @@ size_t	gettime(void)
  * @param time Time to wait in milliseconds
  * 
  */
-void	waittime(size_t time)
+void	waittime(long time)
 {
-	size_t	start;
-	size_t	end;
+	long	start;
+	long	end;
 
 	start = gettime();
 	end = start + time;

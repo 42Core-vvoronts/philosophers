@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 10:36:26 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:05:43 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,8 @@
 void	init_philo(t_thread *philo, t_ctx *ctx, int i)
 {
 	philo->id = i + 1;
-	philo->t_meal = gettime();
 	philo->left = &ctx->forks[(i + 1) % ctx->n_ph];
 	philo->right = &ctx->forks[i];
-	// if (i == 0)
-	// 	philo->left = &ctx->forks[ctx->n_ph - 1];
-	// else
-	// 	philo->left = &ctx->forks[i - 1];
-	// if (i == ctx->n_ph - 1)
-	// 	philo->right = &ctx->forks[0];
-	// else
-	// 	philo->right = &ctx->forks[i];
-	mxinit(philo->left, ctx);
-	mxinit(philo->right, ctx);
 	philo->ctx = ctx;
 }
 

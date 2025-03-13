@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:14:44 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 09:14:04 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 11:14:57 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static bool	everyone_full(t_thread *philos, t_ctx *ctx)
 
 bool	is_starving(t_thread philo, t_ctx *ctx)
 {
-	size_t	time;
+	long	time;
 
 	time = gettime();
 	if (time - philo.t_meal > ctx->t_die)
