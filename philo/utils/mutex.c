@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:38:48 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/05 13:50:25 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/12 18:57:41 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	mxdestroy(pthread_mutex_t *lock, t_ctx *ctx)
 	
 	code = pthread_mutex_destroy(lock);
 	if (code != SUCCESS)
-		errexit(code, "pthread_mutex_init()", &ctx);
+		errexit(code, "pthread_mutex_destroy()", &ctx);
 }
 
 void	mxlock(pthread_mutex_t *lock, t_ctx *ctx)

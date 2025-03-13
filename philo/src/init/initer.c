@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/07 18:58:12 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 10:36:26 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,17 @@
 void	init_philo(t_thread *philo, t_ctx *ctx, int i)
 {
 	philo->id = i + 1;
-	philo->t_born = gettime();
-	if (i == 0)
-		philo->left = &ctx->forks[ctx->n_ph - 1];
-	else
-		philo->left = &ctx->forks[i - 1];
-	if (i == ctx->n_ph - 1)
-		philo->right = &ctx->forks[0];
-	else
-		philo->right = &ctx->forks[i];
+	philo->t_meal = gettime();
+	philo->left = &ctx->forks[(i + 1) % ctx->n_ph];
+	philo->right = &ctx->forks[i];
+	// if (i == 0)
+	// 	philo->left = &ctx->forks[ctx->n_ph - 1];
+	// else
+	// 	philo->left = &ctx->forks[i - 1];
+	// if (i == ctx->n_ph - 1)
+	// 	philo->right = &ctx->forks[0];
+	// else
+	// 	philo->right = &ctx->forks[i];
 	mxinit(philo->left, ctx);
 	mxinit(philo->right, ctx);
 	philo->ctx = ctx;
@@ -47,6 +49,7 @@ void	init(t_ctx **ctx, char **argv)
 	i = (*ctx)->n_ph;
 	while (i--)
 		mxinit(&(*ctx)->forks[i], *ctx);
+	(*ctx)->meallock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), *ctx);
 	(*ctx)->t_die = ft_atoi(argv[2]);
 	(*ctx)->t_eat = ft_atoi(argv[3]);
 	(*ctx)->t_sleep = ft_atoi(argv[4]);

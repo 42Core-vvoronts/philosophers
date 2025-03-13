@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/07 18:51:06 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 09:07:48 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,8 @@ typedef struct s_thread
 	pthread_mutex_t		*right;
 	int					id;
 	int					ate;
-	bool				starve;
-	size_t				t_born;
-	size_t					t_meal;
+	bool				eating;
+	size_t				t_meal;
 	t_ctx				*ctx;
 }	t_thread;
 
@@ -46,13 +45,13 @@ typedef struct s_ctx
 	pthread_t			waiter;
 	t_thread			*philos;
 	pthread_mutex_t		*forks;
+	pthread_mutex_t		*meallock;
 	pthread_mutex_t		deadlock;
-	pthread_mutex_t		meallock;
 	pthread_mutex_t		writelock;
 	bool				death;
 	int					n_ph;
 	int					meals;
-	size_t				t_die; // const size_t because don't change
+	size_t				t_die;
 	size_t				t_eat;
 	size_t				t_sleep;
 }	t_ctx;

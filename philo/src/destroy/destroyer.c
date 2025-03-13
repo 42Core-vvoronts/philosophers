@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:23 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/07 18:54:54 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/12 19:02:00 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,19 @@
 
 void	destroy(t_ctx **ctx)
 {
-	int	i;
+	// int	i;
 
-	i = 0;
+	// i = 0;
 	if (!ctx || !*ctx)
 		return ;
-	while (i < (*ctx)->n_ph)
-	{
-		mxdestroy(&(*ctx)->forks[i], *ctx);
-		i++;
-	}
-	mxdestroy(&(*ctx)->meallock, *ctx);
-	mxdestroy(&(*ctx)->deadlock, *ctx);
-	mxdestroy(&(*ctx)->writelock, *ctx);
+	// while (i < (*ctx)->n_ph)
+	// {
+	// 	mxdestroy(&(*ctx)->forks[i], *ctx);
+	// 	i++;
+	// }
+	// mxdestroy(&(*ctx)->meallock, *ctx);
+	// mxdestroy(&(*ctx)->deadlock, *ctx);
+	// mxdestroy(&(*ctx)->writelock, *ctx);
 	free((*ctx)->philos);
 	free(*ctx);
 }
