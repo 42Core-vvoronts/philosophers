@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 11:09:54 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:17:14 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,22 @@ static void	join_thread(pthread_t thread, t_ctx *ctx)
 	code = pthread_join(thread, NULL);
 	if (code != SUCCESS)
 		errexit(code, "pthread_join", &ctx);
+}
+
+void	sync_threads(t_ctx *ctx)
+{
+	long start_time;
+	while (ctx->ready == false)
+		usleep(100);
+	mxlock(ctx->rwmx, ctx);
+	start_time = gettime();
+	if (!ctx->t_born)
+	{
+		ctx->t_born = start_time;
+		for (int i = 0; i < ctx->n_ph; i++)
+			ctx->philos[i].t_meal = start_time;
+	}
+	mxunlock(ctx->rwmx, ctx);
 }
 
 /**

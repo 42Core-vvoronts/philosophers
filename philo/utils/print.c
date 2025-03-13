@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:18:50 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 11:16:37 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:10:49 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,6 @@ void	writestatus(t_thread *philo, char *str)
 {
 	long	time;
 
-	time = gettime();
-	printf("%zu %ld %s\n", time, philo->id, str);
+	time = gettime() - philo->ctx->t_born;
+    printf("%011ld %ld %s\n", time, philo->id, str);
 }

@@ -6,18 +6,11 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 11:11:11 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 17:17:03 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	sync_threads(t_ctx *ctx)
-{
-	while (ctx->ready == false)
-		usleep(100);
-}
-
 
 void	sleeping(t_thread *philo)
 {
@@ -33,33 +26,29 @@ void	eating(t_thread *philo)
 {
 	if (philo->ctx->n_ph == 1)
 	{
+		mxlock(philo->left, philo->ctx);
+		writestatus(philo, "has taken a left fork");
 		philo->eating = false;
+		mxunlock(philo->left, philo->ctx);
 		return ;
 	}
-
-	mxlock(philo->ctx->meallock, philo->ctx);
-	while (philo->ctx->philos[(philo->id - 1 + philo->ctx->n_ph) % philo->ctx->n_ph].eating ||
-	philo->ctx->philos[(philo->id + 1) % philo->ctx->n_ph].eating)
-	{
-		mxunlock(philo->ctx->meallock, philo->ctx);
-		usleep(100);
-		mxlock(philo->ctx->meallock, philo->ctx);
-	}
-	philo->eating = true;
-	mxunlock(philo->ctx->meallock, philo->ctx);
-
-	
 	mxlock(philo->left, philo->ctx);
 	writestatus(philo, "has taken a left fork");
 	mxlock(philo->right, philo->ctx);
 	writestatus(philo, "has taken a right fork");
+	
+	mxlock(philo->ctx->mealmx, philo->ctx);
+	philo->eating = true;
 	writestatus(philo, "is eating");
 	waittime(philo->ctx->t_eat);
 	philo->ate++;
 	philo->t_meal = gettime();
+	mxunlock(philo->ctx->mealmx, philo->ctx);
 
 	mxunlock(philo->left, philo->ctx);
 	mxunlock(philo->right, philo->ctx);
+
+
 }
 
 bool   everyone_alive(t_ctx *ctx)
