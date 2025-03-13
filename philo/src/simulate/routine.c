@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 17:17:03 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:18:46 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void	sleeping(t_thread *philo)
 }
 void	thinking(t_thread *philo)
 {
+	if (philo->ctx->death)
+		return ;
 	writestatus(philo, "is thinking");
 }
 
@@ -28,8 +30,9 @@ void	eating(t_thread *philo)
 	{
 		mxlock(philo->left, philo->ctx);
 		writestatus(philo, "has taken a left fork");
-		philo->eating = false;
-		mxunlock(philo->left, philo->ctx);
+		waittime(philo->ctx->t_die);
+		philo->ctx->death = true;
+		mxlock(philo->ctx->deadmx, philo->ctx);
 		return ;
 	}
 	mxlock(philo->left, philo->ctx);
@@ -47,8 +50,6 @@ void	eating(t_thread *philo)
 
 	mxunlock(philo->left, philo->ctx);
 	mxunlock(philo->right, philo->ctx);
-
-
 }
 
 bool   everyone_alive(t_ctx *ctx)

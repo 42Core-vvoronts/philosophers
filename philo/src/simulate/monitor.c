@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:14:44 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 17:12:48 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:11:55 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,17 @@ bool	someone_dead(t_thread *philos, t_ctx *ctx)
 	int	i;
 
 	i = 0;
+	if (ctx->death == true)
+	{
+		writestatus(&philos[i], "died");	
+		return (true);
+	}
 	while (i < ctx->n_ph)
 	{
 		if (is_starving(philos[i], ctx) == true)
 		{
 			writestatus(&philos[i], "died");
+			mxlock(ctx->deadmx, ctx);
 			ctx->death = true;
 			return (true);
 		}
@@ -73,7 +79,6 @@ void	*monitor(void *arg)
 		if (someone_dead(ctx->philos, ctx) == true 
 			|| everyone_full(ctx->philos, ctx) == true)
 			break;
-		waittime(500);
 	}
 	return (NULL);
 }

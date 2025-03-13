@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 16:40:21 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:10:27 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	init(t_ctx **ctx, char **argv)
 	while (i--)
 		mxinit(&(*ctx)->forks[i], *ctx);
 	(*ctx)->mealmx = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), *ctx);
+	(*ctx)->deadmx = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), *ctx);
 	(*ctx)->rwmx = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), *ctx);
 	(*ctx)->t_die = ft_atoi(argv[2]);
 	(*ctx)->t_eat = ft_atoi(argv[3]);

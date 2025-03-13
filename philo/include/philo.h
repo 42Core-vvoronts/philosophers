@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 17:15:38 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:10:21 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_ctx
 	t_thread			*philos;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		*mealmx;
+	pthread_mutex_t		*deadmx;
 	pthread_mutex_t		*rwmx;
 	bool				death;
 	bool				ready;
