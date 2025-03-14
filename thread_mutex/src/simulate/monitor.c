@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 17:14:44 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 19:11:55 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:16:14 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static bool	everyone_full(t_thread *philos, t_ctx *ctx)
 		mxlock(ctx->mealmx, ctx);
 		if (philos[i].ate >= ctx->meals)
 			full++;
-		mxlock(ctx->mealmx, ctx);
+		mxunlock(ctx->mealmx, ctx);
 		i++;
 	}
 	if (full == ctx->n_ph)
@@ -79,6 +79,7 @@ void	*monitor(void *arg)
 		if (someone_dead(ctx->philos, ctx) == true 
 			|| everyone_full(ctx->philos, ctx) == true)
 			break;
+		waittime(100);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 19:28:29 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/14 11:13:55 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,24 @@ void	eating(t_thread *philo)
 		mxlock(philo->ctx->deadmx, philo->ctx);
 		return ;
 	}
-	mxlock(philo->left, philo->ctx);
-	writestatus(philo, "has taken a left fork");
-	mxlock(philo->right, philo->ctx);
-	writestatus(philo, "has taken a right fork");
+	if (philo->id % 2 == 0)
+	{
+		mxlock(philo->right, philo->ctx);
+		writestatus(philo, "has taken a right fork");
+		mxlock(philo->left, philo->ctx);
+		writestatus(philo, "has taken a left fork");
+	}
+	else
+	{
+		mxlock(philo->left, philo->ctx);
+		writestatus(philo, "has taken a left fork");
+		mxlock(philo->right, philo->ctx);
+		writestatus(philo, "has taken a right fork");
+	}
+	// mxlock(philo->left, philo->ctx);
+	// writestatus(philo, "has taken a left fork");
+	// mxlock(philo->right, philo->ctx);
+	// writestatus(philo, "has taken a right fork");
 	
 	mxlock(philo->ctx->mealmx, philo->ctx);
 	philo->eating = true;
@@ -68,7 +82,11 @@ void	*routine(void *arg)
 	while (everyone_alive(ctx)) 
 	{
 		eating(philo);
+		if (philo->ctx->death)
+			break ;
 		sleeping(philo);
+		if (philo->ctx->death)
+			break ;
 		thinking(philo);
 	}
 	return NULL;

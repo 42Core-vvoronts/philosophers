@@ -12,8 +12,8 @@
 *.a
 
 # tests
-LazyPhilosophersTester
-tests
+tests/repos/*
+tests/testers/*
 
 # trashy
 .DS_store
