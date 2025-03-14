@@ -1,0 +1,8 @@
+------------./philo 1 200 200 200------------
+Error: Invalid philosophers number
+------------./philo 1 100 200 200 7------------
+Error: Invalid number of arguments
+------------./philo 1 200 200 200------------
+Error: Invalid philosophers number
+------------./philo 1 100 200 200 7------------
+Error: Invalid number of arguments
