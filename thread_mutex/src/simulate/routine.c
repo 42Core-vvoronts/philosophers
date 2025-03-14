@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 19:18:46 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/03/13 19:28:29 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ void	eating(t_thread *philo)
 
 bool   everyone_alive(t_ctx *ctx)
 {
-	bool	alive;
-
-	alive = !ctx->death;
-	return (alive);
+	return (!ctx->death);
 }
 
 void	*routine(void *arg)
