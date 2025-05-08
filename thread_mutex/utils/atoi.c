@@ -1,14 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   atoi.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:45:20 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/03 14:22:27 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:15:45 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "philo.h"
 
 int	ft_atoi(const char *str)
 {
@@ -31,5 +33,7 @@ int	ft_atoi(const char *str)
 		nstr = 10 * nstr + (*str - '0');
 		str++;
 	}
+	if (*str)
+		return (0);
 	return (sign * nstr);
 }

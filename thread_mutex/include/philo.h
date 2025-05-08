@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 19:10:21 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/08 18:14:27 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,13 @@ typedef struct s_ctx
 	pthread_mutex_t		*rwmx;
 	bool				death;
 	bool				ready;
-	long				n_ph;
-	long				meals;
+	
 	long				t_born;
 	long				t_die;
 	long				t_eat;
 	long				t_sleep;
+	long				n_ph;
+	long				meals;
 }	t_ctx;
 
 // programm
@@ -81,7 +82,7 @@ void	errexit(int err, const char *msg, t_ctx **ctx);
 long	gettime(void);
 void	waittime(long time);
 void	*memalloc(long size, t_ctx *ctx);
-long	ft_atoi(const char *str);
+int		ft_atoi(const char *str);
 long	ft_strlen(const char *str);
 
 #endif
