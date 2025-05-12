@@ -6,7 +6,7 @@
 #    By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 10:32:04 by vvoronts          #+#    #+#              #
-#    Updated: 2025/03/05 14:09:14 by vvoronts         ###   ########.fr        #
+#    Updated: 2025/05/12 15:23:48 by vvoronts         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,7 @@ SRC 				=	\
 						destroyer.c \
 						\
 						atoi.c \
-						error.c \
+						exit.c \
 						memalloc.c \
 						print.c \
 						strlen.c \

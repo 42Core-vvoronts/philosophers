@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/14 11:12:36 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:24:32 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	create_thread(pthread_t *thread, void *(*routine)(void *), void *arg
 	int		code;
 	code = pthread_create(thread, NULL, routine, arg);
 	if (code != SUCCESS)
-		errexit(code, "pthread_create", &ctx);
+		ft_exit(FAIL, "pthread_create", ctx);
 }
 
 static void	join_thread(pthread_t thread, t_ctx *ctx)
@@ -25,7 +25,7 @@ static void	join_thread(pthread_t thread, t_ctx *ctx)
 	int		code;
 	code = pthread_join(thread, NULL);
 	if (code != SUCCESS)
-		errexit(code, "pthread_join", &ctx);
+		ft_exit(code, "pthread_join", ctx);	
 }
 
 static void	detach_thread(pthread_t thread, t_ctx *ctx)
@@ -33,15 +33,15 @@ static void	detach_thread(pthread_t thread, t_ctx *ctx)
 	int		code;
 	code = pthread_detach(thread);
 	if (code != SUCCESS)
-		errexit(code, "pthread_join", &ctx);
+		ft_exit(code, "pthread_detach", ctx);
 }
 
 void	sync_threads(t_ctx *ctx)
 {
 	long start_time;
-	while (ctx->ready == false)
+	while (ctx->f_ready == false)
 		usleep(100);
-	mxlock(ctx->rwmx, ctx);
+	mxlock(ctx->write_lock, ctx);
 	start_time = gettime();
 	if (!ctx->t_born)
 	{
@@ -49,7 +49,7 @@ void	sync_threads(t_ctx *ctx)
 		for (int i = 0; i < ctx->n_ph; i++)
 			ctx->philos[i].t_meal = start_time;
 	}
-	mxunlock(ctx->rwmx, ctx);
+	mxunlock(ctx->write_lock, ctx);
 }
 
 /**
@@ -72,6 +72,6 @@ void	simulate(t_ctx **ctx)
 		detach_thread(philo->thread, *ctx);
 		i++;
 	}
-	(*ctx)->ready = true;
+	(*ctx)->f_ready = true;
 	join_thread((*ctx)->waiter, *ctx);
 }

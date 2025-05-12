@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/14 11:13:55 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/08 19:30:19 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	sleeping(t_thread *philo)
 {
+	if (philo->ctx->death)
+		return ;
 	writestatus(philo, "is sleeping");
 	waittime(philo->ctx->t_sleep);
 }
@@ -26,6 +28,8 @@ void	thinking(t_thread *philo)
 
 void	eating(t_thread *philo)
 {
+	if (philo->ctx->death)
+		return ;
 	if (philo->ctx->n_ph == 1)
 	{
 		mxlock(philo->left, philo->ctx);
@@ -35,32 +39,28 @@ void	eating(t_thread *philo)
 		mxlock(philo->ctx->deadmx, philo->ctx);
 		return ;
 	}
-	if (philo->id % 2 == 0)
+	
+	if (philo->id == philo->ctx->n_ph)
 	{
 		mxlock(philo->right, philo->ctx);
-		writestatus(philo, "has taken a right fork");
+		writestatus(philo, "has taken a fork");
 		mxlock(philo->left, philo->ctx);
-		writestatus(philo, "has taken a left fork");
+		writestatus(philo, "has taken a fork");
 	}
 	else
-	{
+	{	
 		mxlock(philo->left, philo->ctx);
-		writestatus(philo, "has taken a left fork");
+		writestatus(philo, "has taken a fork");
 		mxlock(philo->right, philo->ctx);
-		writestatus(philo, "has taken a right fork");
+		writestatus(philo, "has taken a fork");
 	}
-	// mxlock(philo->left, philo->ctx);
-	// writestatus(philo, "has taken a left fork");
-	// mxlock(philo->right, philo->ctx);
-	// writestatus(philo, "has taken a right fork");
+
 	
-	mxlock(philo->ctx->mealmx, philo->ctx);
 	philo->eating = true;
 	writestatus(philo, "is eating");
 	waittime(philo->ctx->t_eat);
 	philo->ate++;
 	philo->t_meal = gettime();
-	mxunlock(philo->ctx->mealmx, philo->ctx);
 
 	mxunlock(philo->left, philo->ctx);
 	mxunlock(philo->right, philo->ctx);
@@ -81,13 +81,9 @@ void	*routine(void *arg)
 	sync_threads(ctx);
 	while (everyone_alive(ctx)) 
 	{
-		eating(philo);
-		if (philo->ctx->death)
-			break ;
-		sleeping(philo);
-		if (philo->ctx->death)
-			break ;
 		thinking(philo);
+		eating(philo);
+		sleeping(philo);
 	}
 	return NULL;
 }

@@ -6,13 +6,13 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:23 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/12 19:02:00 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/12 15:00:40 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	destroy(t_ctx **ctx)
+void	destroy(t_ctx *ctx)
 {
 	// int	i;
 

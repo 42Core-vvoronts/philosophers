@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:46:13 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/05 15:39:52 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/12 14:58:16 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * 
  * Validate number of arguments and their values
  */
-void	validate(char **argv, int argc)
+int	validate(char **argv, int argc)
 {
 	char	*msg;
 
@@ -36,6 +36,8 @@ void	validate(char **argv, int argc)
 		msg = "Invalid time to sleep";
 	else if (argv[5] && (ft_atoi(argv[5]) <= 0))
 		msg = "Invalid number of times each philosopher must eat";
-	if (msg)
-		errexit(FAIL, msg, NULL);
+	if (!msg)
+		return (SUCCESS);
+	writestd(msg, 2);
+	return (FAIL);
 }
