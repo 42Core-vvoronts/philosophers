@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/12 16:55:38 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:48:17 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,7 @@
 # define FAIL -1
 # define SUCCESS 0
 
-typedef struct s_ctx;
-typedef struct s_philo;
+typedef struct s_philo t_philo;
 
 typedef struct s_ctx
 {
@@ -59,7 +58,7 @@ typedef struct s_philo
 
 // 
 int		validate(char **argv, int argc);
-int		init(t_ctx *ctx, char **argv);
+t_ctx	*init(char **argv);
 int		ft_exit(int err, const char *msg, t_ctx *ctx);
 
 void	init_philo(t_philo *philo, t_ctx *ctx, int i);

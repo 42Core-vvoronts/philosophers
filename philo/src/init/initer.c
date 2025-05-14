@@ -6,16 +6,14 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/12 16:44:51 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/14 19:49:09 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*memalloc(long size, t_ctx *ctx)
+void	*memalloc(long size, void *ptr)
 {
-	void	*ptr;
-
 	ptr = malloc(size);
 	if (!ptr)
 		return (NULL);
@@ -50,9 +48,10 @@ void	init_philo(t_philo *philo, t_ctx *ctx, int i)
  * @param argv arguments
  * 
  */
-int	init(t_ctx *ctx, char **argv)
+t_ctx	*init(char **argv)
 {
-	int	i;
+	int		i;
+	t_ctx	*ctx;
 
 	ctx = (t_ctx *)memalloc(sizeof(t_ctx *), NULL);
 	if (!ctx)
@@ -67,7 +66,10 @@ int	init(t_ctx *ctx, char **argv)
 	ctx->write_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
 	ctx->forks = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t) * ctx->n_philos, ctx);
 	if (!ctx->forks || !ctx->uni_lock || !ctx->write_lock)
-		return (ft_exit(FAIL, "malloc()", ctx));
+	{
+		ft_exit(FAIL, "malloc()", ctx);
+		return (NULL); 
+	}
 	i = ctx->n_philos;
 	while (i-- && ctx->f_error == false)
 		mxinit(&ctx->forks[i], ctx);
@@ -75,6 +77,6 @@ int	init(t_ctx *ctx, char **argv)
 	mxinit(ctx->write_lock, ctx);
 	ctx->philos = (t_philo *)memalloc(sizeof(t_philo) * ctx->n_philos, ctx);
 	if (ctx->f_error == true)
-		return (FAIL);
-	return (SUCCESS);
+		return (NULL);
+	return (ctx);
 }
