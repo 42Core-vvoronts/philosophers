@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:45:20 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 10:17:58 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:44:18 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 long	ft_atol(const char *str)
 {
 	long		nstr;
-	long		sign;
 
-	sign = 1;
 	nstr = 0;
 	while (*str == ' ' || *str == '\t' || *str == '\n'
 		|| *str == '\v' || *str == '\f' || *str == '\r')
