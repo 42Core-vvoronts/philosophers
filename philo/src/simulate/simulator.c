@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 18:45:13 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 19:42:21 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	wait_threads(t_ctx *ctx)
 	{
 		mxlock(ctx->uni_lock, ctx);
 		if (!ctx->t_start)
-			ctx->t_start = gettime();
+			ctx->t_start = gettime(ctx);
 		mxunlock(ctx->uni_lock, ctx);
 	}
 }

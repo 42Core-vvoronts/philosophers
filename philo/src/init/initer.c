@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 18:19:06 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 19:38:04 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,7 @@ void	init_philo(t_ctx *ctx, int i)
 		philo->left_fork = NULL;
 		return ;
 	}
-	if (philo->id == ctx->n_philos)
-		philo->left_fork = &ctx->forks[0];
-	else if (philo->id == 1)
-		philo->left_fork = &ctx->forks[ctx->n_philos - 1];
-	else
-		philo->left_fork = &ctx->forks[i + 1];
-	philo->right_fork = &ctx->forks[i];
+	philo->left_fork = &ctx->forks[(i + 1) % ctx->n_philos];
 }
 
 /**
@@ -66,7 +60,7 @@ t_ctx	*init(char **argv)
 	ctx->t_die = ft_atol(argv[2]);
 	ctx->t_eat = ft_atol(argv[3]);
 	ctx->t_sleep = ft_atol(argv[4]);
-	if (ctx->t_eat > ctx->t_sleep)
+	if (ctx->n_philos % 2 == 1 && ctx->t_eat > ctx->t_sleep)
 		ctx->t_think = ctx->t_eat - ctx->t_sleep;
 	if (argv[5])
 		ctx->n_meals = ft_atol(argv[5]);

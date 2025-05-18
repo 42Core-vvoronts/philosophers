@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 18:26:39 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 19:48:26 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,27 @@
 
 void	sleeping(t_philo *philo, t_ctx *ctx)
 {
+	philo->t_now = gettime(ctx);
 	if (ctx->f_end)
 		return ;
 	writestatus(philo, "is sleeping");
-	usleep(ctx->t_sleep * 1000);
-	// usleep(ctx->t_sleep * 700);
-	// while (1)
-	// {
-	// 	if ((philo->t_last_meal + ctx->t_eat + ctx->t_sleep) <= gettime())
-	// 		break ;
-	// 	usleep(100);
-	// }
+	usleep(ctx->t_sleep * 700);
+	while ((philo->t_now + ctx->t_sleep) < gettime(ctx))
+		usleep(100);
 }
+
 void	thinking(t_philo *philo, t_ctx *ctx)
 {
-	long	now;
+	long	stall;
 	
+	stall = 0;
 	if (ctx->f_end)
 		return ;
-	now = gettime();
+	philo->t_now = gettime(ctx);
 	writestatus(philo, "is thinking");
-	usleep(ctx->t_think * 700);
-	while (ctx->t_think > gettime() - now)
+	stall = ctx->t_eat;
+	usleep(stall * 700);	
+	while (philo->t_now + stall < gettime(ctx))
 		usleep(100);
 }
 
@@ -44,9 +43,11 @@ void	eating(t_philo *philo, t_ctx *ctx)
 	if (ctx->f_end)
 		return ;
 	mxlock(philo->right_fork, philo->ctx);
+	writestatus(philo, "has taken a fork");
 	mxlock(philo->left_fork, philo->ctx);
+	writestatus(philo, "has taken a fork");
 	writestatus(philo, "is eating");
-	philo->t_last_meal= gettime();
+	philo->t_last_meal= gettime(ctx);
 	philo->n_meals++;
 	usleep(ctx->t_eat * 1000);
 	mxunlock(philo->left_fork, philo->ctx);
