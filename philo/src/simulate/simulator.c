@@ -6,11 +6,43 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 11:08:43 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:59:58 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void queue_threads(t_philo *philo, t_ctx *ctx)
+{	
+	if (philo->id % 2 == 0)
+		return ;
+		
+	if (philo->id == ctx->n_philos)
+	{
+		if (ctx->t_sleep > ctx->t_eat)
+			waittime(ctx->t_eat * 2);
+		else
+			waittime(ctx->t_sleep * 2);
+		return ;
+	}
+	if (ctx->t_sleep > ctx->t_eat)
+		waittime(ctx->t_eat);
+	else
+		waittime(ctx->t_sleep);
+}
+
+void	wait_threads(t_ctx *ctx)
+{
+	while (ctx->f_ready == false)
+		usleep(100);
+	if (ctx->t_start == 0)
+	{
+		mxlock(ctx->uni_lock, ctx);
+		if (!ctx->t_start)
+			ctx->t_start = gettime();
+		mxunlock(ctx->uni_lock, ctx);
+	}
+}
 
 static void	create_thread(t_philo *philo, void *(*routine)(void *), void *arg, t_ctx *ctx)
 {
@@ -26,19 +58,6 @@ static void	join_thread(pthread_t *philo, t_ctx *ctx)
 	code = pthread_join(*philo, NULL);
 	if (code != SUCCESS)
 		ft_exit(code, "pthread_join", ctx);	
-}
-
-void	sync_threads(t_ctx *ctx)
-{
-	while (ctx->f_ready == false)
-		usleep(100);
-	if (ctx->t_start == 0)
-	{
-		mxlock(ctx->uni_lock, ctx);
-		if (!ctx->t_start)
-			ctx->t_start = gettime();
-		mxunlock(ctx->uni_lock, ctx);
-	}
 }
 
 /**

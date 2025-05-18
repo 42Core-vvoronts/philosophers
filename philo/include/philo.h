@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 10:53:55 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:17:18 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,33 +56,29 @@ typedef struct s_ctx
 }	t_ctx;
 
 
-// utils
-void	*memalloc(size_t size, void *ctx);
-long	ft_atol(const char *str);
-void	writestatus(t_philo *philo, char *str);
-int	mxinit(pthread_mutex_t *lock, t_ctx *ctx);
-int	mxdestroy(pthread_mutex_t *lock, t_ctx *ctx);
-int	mxlock(pthread_mutex_t *lock, t_ctx *ctx);
-int	mxunlock(pthread_mutex_t *lock, t_ctx *ctx);
-
-
-
-
-
+// init
 int		validate(char **argv, int argc);
 t_ctx	*init(char **argv);
-int		ft_exit(int err, const char *msg, t_ctx *ctx);
 void	init_philo(t_ctx *ctx, int i);
-void	simulate(t_ctx *ctx);
 void	destroy(t_ctx *ctx);
-//
+// rub
+void	simulate(t_ctx *ctx);
 void	*routine(void *arg);
-void	*monitor(void *arg);
-void	sync_threads(t_ctx *ctx);
+void	wait_threads(t_ctx *ctx);
+void	queue_threads(t_philo *philo, t_ctx *ctx);
+// mutex wrappers
+int		mxinit(pthread_mutex_t *lock, t_ctx *ctx);
+int		mxdestroy(pthread_mutex_t *lock, t_ctx *ctx);
+int		mxlock(pthread_mutex_t *lock, t_ctx *ctx);
+int		mxunlock(pthread_mutex_t *lock, t_ctx *ctx);
 // utils
-void	writestd(const char *msg, int std);
-long	gettime(void);
-void	waittime(long time);
+void	*memalloc(size_t size, void *ctx);
+int		ft_exit(int err, const char *msg, t_ctx *ctx);
+long	ft_atol(const char *str);
 long	ft_strlen(const char *str);
+void	writestatus(t_philo *philo, char *str);
+void	writestd(const char *msg, int std);
+void	waittime(long time);
+long	gettime(void);
 
 #endif

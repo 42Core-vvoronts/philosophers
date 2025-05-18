@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 11:08:02 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:16:01 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,10 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	ctx = philo->ctx;
-	sync_threads(ctx);
+	wait_threads(ctx);
 	if (ctx->n_philos == 1)
 		return (one_philo(philo, ctx));
+	queue_threads(philo, ctx);
 	while (ctx->f_end == false) 
 	{
 		eating(philo, ctx);
