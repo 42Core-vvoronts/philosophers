@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 17:36:40 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 18:07:45 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,32 @@ void	sleeping(t_philo *philo, t_ctx *ctx)
 		return ;
 	writestatus(philo, "is sleeping");
 	usleep(ctx->t_sleep * 1000);
-	while (1)
-	{
-		if ((philo->t_last_meal + ctx->t_eat + ctx->t_sleep) <= gettime())
-			break ;
-	}
+	// usleep(ctx->t_sleep * 700);
+	// while (1)
+	// {
+	// 	if ((philo->t_last_meal + ctx->t_eat + ctx->t_sleep) <= gettime())
+	// 		break ;
+	// 	usleep(100);
+	// }
 }
 void	thinking(t_philo *philo, t_ctx *ctx)
 {
+	// long	now;
+	
 	if (ctx->f_end)
 		return ;
-	writestatus(philo, "is thinking");
+	// now = gettime();
 	usleep(ctx->t_think * 1000);
+	// printf("now: %ld, t_think: %ld\n", now, ctx->t_think);
+	writestatus(philo, "is thinking");
+	// if (ctx->t_think > 0)
+	// {
+	// 	usleep(ctx->t_think * 700);
+	// 	while (now + ctx->t_think < gettime())
+	// 		usleep(100);
+	// }
+	// else
+	// 	usleep(1);
 }
 
 void	eating(t_philo *philo, t_ctx *ctx)

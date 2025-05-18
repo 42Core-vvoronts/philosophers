@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 17:27:29 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 18:19:06 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ void	init_philo(t_ctx *ctx, int i)
 		philo->left_fork = &ctx->forks[ctx->n_philos - 1];
 	else
 		philo->left_fork = &ctx->forks[i + 1];
+	philo->right_fork = &ctx->forks[i];
 }
 
 /**
@@ -77,9 +78,9 @@ t_ctx	*init(char **argv)
 		ft_exit(FAIL, "malloc()", ctx);
 		return (NULL); 
 	}
-	i = ctx->n_philos;
-	while (i-- && ctx->f_error == false)
-		mxinit(&ctx->forks[i], ctx);
+	i = 0;
+	while (i < ctx->n_philos && ctx->f_error == false)
+		mxinit(&ctx->forks[i++], ctx);
 	mxinit(ctx->uni_lock, ctx);
 	mxinit(ctx->write_lock, ctx);
 	ctx->philos = (t_philo *)memalloc(sizeof(t_philo) * ctx->n_philos, ctx);
