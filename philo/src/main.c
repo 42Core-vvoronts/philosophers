@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:33:37 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/14 19:47:51 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:27:25 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	main(int argc, char **argv)
 	ctx = init(argv);
 	if (ctx == NULL)
 		return (FAIL);
-	simulate(&ctx);
-	destroy(&ctx);
+	simulate(ctx);
+	destroy(ctx);
 	return (SUCCESS);
 }

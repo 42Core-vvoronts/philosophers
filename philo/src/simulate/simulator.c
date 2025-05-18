@@ -6,16 +6,16 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/12 17:20:11 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:37:00 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	create_thread(pthread_t *philo, void *(*routine)(void *), void *arg, t_ctx *ctx)
+static void	create_thread(t_philo *philo, void *(*routine)(void *), void *arg, t_ctx *ctx)
 {
 	int		code;
-	code = pthread_create(philo, NULL, routine, arg);
+	code = pthread_create(&philo->id_pthread, NULL, routine, arg);
 	if (code != SUCCESS)
 		ft_exit(FAIL, "pthread_create", ctx);
 }
@@ -23,17 +23,9 @@ static void	create_thread(pthread_t *philo, void *(*routine)(void *), void *arg,
 static void	join_thread(pthread_t *philo, t_ctx *ctx)
 {
 	int		code;
-	code = pthread_join(philo, NULL);
+	code = pthread_join(*philo, NULL);
 	if (code != SUCCESS)
 		ft_exit(code, "pthread_join", ctx);	
-}
-
-static void	detach_thread(pthread_t *philo, t_ctx *ctx)
-{
-	int		code;
-	code = pthread_detach(philo);
-	if (code != SUCCESS)
-		ft_exit(code, "pthread_detach", ctx);
 }
 
 void	sync_threads(t_ctx *ctx)
@@ -61,7 +53,7 @@ void	simulate(t_ctx *ctx)
 	i = 0;
 	while (i < ctx->n_philos)
 	{
-		create_thread(&ctx->philos[i], routine, ctx->philos[i], ctx);
+		create_thread(&ctx->philos[i], routine, (void *)&ctx->philos[i], ctx);
 		i++;
 	}
 	ctx->f_ready = true;

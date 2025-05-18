@@ -1,21 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   atoi.c                                             :+:      :+:    :+:   */
+/*   atol.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/02 19:45:20 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/08 18:15:45 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:17:58 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_atoi(const char *str)
+long	ft_atol(const char *str)
 {
-	int		nstr;
-	int		sign;
+	long		nstr;
+	long		sign;
 
 	sign = 1;
 	nstr = 0;
@@ -25,7 +25,7 @@ int	ft_atoi(const char *str)
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
-			sign = -1;
+			return (0);
 		str++;
 	}
 	while (*str >= '0' && *str <= '9')
@@ -35,5 +35,5 @@ int	ft_atoi(const char *str)
 	}
 	if (*str)
 		return (0);
-	return (sign * nstr);
+	return (nstr);
 }

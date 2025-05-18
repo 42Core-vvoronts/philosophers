@@ -6,7 +6,7 @@
 #    By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 10:32:04 by vvoronts          #+#    #+#              #
-#    Updated: 2025/05/12 15:23:48 by vvoronts         ###   ########.fr        #
+#    Updated: 2025/05/18 10:37:16 by vvoronts         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,13 +36,11 @@ SRC 				=	\
 						validator.c \
 						initer.c \
 						simulator.c \
-						monitor.c \
 						routine.c \
 						destroyer.c \
 						\
-						atoi.c \
+						atol.c \
 						exit.c \
-						memalloc.c \
 						print.c \
 						strlen.c \
 						time.c \

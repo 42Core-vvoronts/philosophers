@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/14 19:48:17 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:28:26 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,22 @@
 # define FAIL -1
 # define SUCCESS 0
 
-typedef struct s_philo t_philo;
+typedef struct s_ctx t_ctx;
+
+typedef struct s_philo
+{
+	int					id;
+	pthread_t			id_pthread;
+	pthread_mutex_t		*left_fork;
+	pthread_mutex_t		*right_fork;
+	long				t_last_meal;
+	int					n_meals;
+	t_ctx				*ctx;
+}	t_philo;
 
 typedef struct s_ctx
 {
-	struct t_philo		*philos;
+	t_philo				*philos;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		*uni_lock;
 	pthread_mutex_t		*write_lock;
@@ -44,33 +55,26 @@ typedef struct s_ctx
 	int					n_meals;
 }	t_ctx;
 
-typedef struct s_philo
-{
-	int					id;
-	pthread_t			id_pthread;
-	pthread_mutex_t		*left_fork;
-	pthread_mutex_t		*right_fork;
-	long				t_last_meal;
-	int					n_meals;
-	t_ctx				*ctx;
-}	t_philo;
+
+// utils
+void	*memalloc(size_t size, void *ctx);
+long	ft_atol(const char *str);
 
 
-// 
+
+
+
+
 int		validate(char **argv, int argc);
 t_ctx	*init(char **argv);
 int		ft_exit(int err, const char *msg, t_ctx *ctx);
-
-void	init_philo(t_philo *philo, t_ctx *ctx, int i);
-void	simulate(t_ctx **ctx);
-void	destroy(t_ctx **ctx);
-
+void	init_philo(t_ctx *ctx, int i);
+void	simulate(t_ctx *ctx);
+void	destroy(t_ctx *ctx);
 //
 void	*routine(void *arg);
 void	*monitor(void *arg);
 void	sync_threads(t_ctx *ctx);
-//
-
 // utils
 void	mxinit(pthread_mutex_t *lock, t_ctx *ctx);
 void	mxdestroy(pthread_mutex_t *lock, t_ctx *ctx);
@@ -80,8 +84,6 @@ void	writestatus(t_philo *philo, char *str);
 void	writestd(const char *msg, int std);
 long	gettime(void);
 void	waittime(long time);
-void	*memalloc(long size, t_ctx *ctx);
-int		ft_atoi(const char *str);
 long	ft_strlen(const char *str);
 
 #endif

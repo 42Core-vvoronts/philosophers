@@ -6,25 +6,30 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/14 19:49:09 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:26:34 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*memalloc(long size, void *ptr)
+void	*memalloc(size_t size, void *ctx)
 {
-	ptr = malloc(size);
+	void *ptr = malloc(size);
 	if (!ptr)
+	{
+		if (ctx)
+			((t_ctx *)ctx)->f_error = true;
 		return (NULL);
+	}
 	memset(ptr, 0, size);
-	if (!ptr)
-		return (NULL);
 	return (ptr);
 }
 
-void	init_philo(t_philo *philo, t_ctx *ctx, int i)
+void	init_philo(t_ctx *ctx, int i)
 {
+	t_philo	*philo;
+
+	philo = &ctx->philos[i];
 	philo->id = i + 1;
 	philo->ctx = ctx;
 	philo->right_fork = &ctx->forks[i];
@@ -53,15 +58,15 @@ t_ctx	*init(char **argv)
 	int		i;
 	t_ctx	*ctx;
 
-	ctx = (t_ctx *)memalloc(sizeof(t_ctx *), NULL);
+	ctx = (t_ctx *)memalloc(sizeof(t_ctx), NULL);
 	if (!ctx)
-		return (FAIL);
-	ctx->n_philos = ft_atoi(argv[1]);
-	ctx->t_die = ft_atoi(argv[2]);
-	ctx->t_eat = ft_atoi(argv[3]);
-	ctx->t_sleep = ft_atoi(argv[4]);
+		return (NULL);
+	ctx->n_philos = ft_atol(argv[1]);
+	ctx->t_die = ft_atol(argv[2]);
+	ctx->t_eat = ft_atol(argv[3]);
+	ctx->t_sleep = ft_atol(argv[4]);
 	if (argv[5])
-		ctx->n_meals = ft_atoi(argv[5]);
+		ctx->n_meals = ft_atol(argv[5]);
 	ctx->uni_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
 	ctx->write_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
 	ctx->forks = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t) * ctx->n_philos, ctx);
@@ -76,6 +81,9 @@ t_ctx	*init(char **argv)
 	mxinit(ctx->uni_lock, ctx);
 	mxinit(ctx->write_lock, ctx);
 	ctx->philos = (t_philo *)memalloc(sizeof(t_philo) * ctx->n_philos, ctx);
+	i = 0;
+	while (i < ctx->n_philos && ctx->f_error == false)
+		init_philo(ctx, i++);
 	if (ctx->f_error == true)
 		return (NULL);
 	return (ctx);
