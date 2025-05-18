@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 11:17:18 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:11:15 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct s_ctx
 	long				t_die;
 	long				t_eat;
 	long				t_sleep;
+	long				t_think;
 	int					n_meals;
 }	t_ctx;
 
@@ -78,7 +79,6 @@ long	ft_atol(const char *str);
 long	ft_strlen(const char *str);
 void	writestatus(t_philo *philo, char *str);
 void	writestd(const char *msg, int std);
-void	waittime(long time);
 long	gettime(void);
 
 #endif

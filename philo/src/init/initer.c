@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 10:26:34 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:27:29 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ t_ctx	*init(char **argv)
 	ctx->t_die = ft_atol(argv[2]);
 	ctx->t_eat = ft_atol(argv[3]);
 	ctx->t_sleep = ft_atol(argv[4]);
+	if (ctx->t_eat > ctx->t_sleep)
+		ctx->t_think = ctx->t_eat - ctx->t_sleep;
 	if (argv[5])
 		ctx->n_meals = ft_atol(argv[5]);
 	ctx->uni_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
