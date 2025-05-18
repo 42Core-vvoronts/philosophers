@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 10:37:00 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 11:08:43 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	sync_threads(t_ctx *ctx)
 {
 	while (ctx->f_ready == false)
 		usleep(100);
-	if (!ctx->t_start)
+	if (ctx->t_start == 0)
 	{
 		mxlock(ctx->uni_lock, ctx);
 		if (!ctx->t_start)
