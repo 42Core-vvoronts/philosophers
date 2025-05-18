@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:56:16 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/03/13 11:14:30 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/18 10:52:14 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ long	gettime(void)
 	struct timeval	rawtime;
 
 	if (gettimeofday(&rawtime, NULL) == -1)
-		errexit(FAIL, "gettimeofday() error\n", NULL);
+		ft_exit(FAIL, "gettimeofday() error\n", NULL);
 	time = rawtime.tv_sec * 1000 + rawtime.tv_usec / 1000;
 	return (time);
 }
