@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/19 17:05:29 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:37:09 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,25 @@ void	esleep(t_philo *philo, long t_act)
 	{
 		usleep(t_act * 700);
 		t_wake = philo->ctx->t_start + philo->t_now + t_act;
+		while (gettime(philo->ctx) < t_wake)
+			usleep(10);
+		return ;
 	}
 	else
 	{
 		usleep(philo->t_remain *700);
 		t_wake = philo->ctx->t_start + philo->t_now + philo->t_remain;
+		while (gettime(philo->ctx) < t_wake)
+			usleep(10);
+		mxlock(philo->ctx->die_lock, philo->ctx);
+		philo->ctx->f_end = true;
+		// printf("	%d died set flag true\n", philo->id);
+		writestatus(philo, "is dead");
+		mxunlock(philo->ctx->die_lock, philo->ctx);
+		return ;
 		
 	}
-	while (gettime(philo->ctx) <= t_wake)
-		usleep(10);
+	
 }
 
 void	sleeping(t_philo *philo, t_ctx *ctx)
@@ -145,8 +155,6 @@ void	*routine(void *arg)
 	if (ctx->n_philos == 1)
 		return (one_philo(philo, ctx));
 	queue_threads(philo, ctx);
-	// printf("	%ld start\n", ctx->t_start);
-	// printf("	%ld real start\n", gettime(ctx));
 	while (true)
 	{
 		eating(philo, ctx);
