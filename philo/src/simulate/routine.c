@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/19 18:53:00 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 19:02:02 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	writedeath(t_philo *philo)
 	// printf("	%d died set flag true\n", philo->id);
 	writestatus(philo, "is dead");
 	mxunlock(philo->ctx->die_lock, philo->ctx);
-	
 }
 
 bool	is_dead(t_philo *philo)
@@ -41,7 +40,16 @@ bool	everyone_full(t_ctx *ctx, t_philo *philo)
 		return (false);
 	if (ctx->n_philos != ctx->n_full)
 		return (false);
-	writedeath(philo);
+	mxlock(philo->ctx->die_lock, philo->ctx);
+	if (philo->ctx->f_end == true)
+	{
+		mxunlock(philo->ctx->die_lock, philo->ctx);
+		return (true);
+	}
+	philo->ctx->f_end = true;
+	// printf("	%d died set flag true\n", philo->id);
+	printf("\nSimulation stopped. Every one is full\n");
+	mxunlock(philo->ctx->die_lock, philo->ctx);
 	return (true);
 }
 
