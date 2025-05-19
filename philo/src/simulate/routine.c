@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/19 15:26:16 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 16:37:44 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,29 @@ bool	everyone_full(t_ctx *ctx, t_philo *philo)
  */
 void	esleep(t_philo *philo, long t_act)
 {
-	// long	t_wake;
+	long	t_wake;
 
+	// printf("	%ld start\n 	%ld last\n	%ld die\n 	%ld now\n", philo->ctx->t_start, philo->t_last_meal, philo->ctx->t_die, philo->t_now);
 	philo->t_remain = philo->t_last_meal + philo->ctx->t_die - philo->t_now;
 	if (philo->t_remain <= 0)
 		return;
-	
+	// printf("	%ld before sleep\n", gettime(philo->ctx));
 	if (philo->t_remain >= t_act)
 	{
-		usleep(t_act * 1000);
-		// t_wake = philo->t_now + t_act;
+		usleep(t_act * 700);
+		t_wake = philo->ctx->t_start + philo->t_now + t_act;
 	}
 	else
 	{
-		usleep(philo->t_remain *1000);
-		// t_wake = philo->t_now + philo->t_remain;
+		usleep(philo->t_remain *700);
+		t_wake = philo->ctx->t_start + philo->t_now + philo->t_remain;
 		
 	}
-	// while (gettime(philo->ctx) < t_wake)
-		// usleep(10);
+	// printf("	%ld after sleep\n", gettime(philo->ctx));
+	// printf("	%ld wake\n", t_wake);
+	// printf("	%ld remain\n", philo->t_remain);
+	while (gettime(philo->ctx) < t_wake)
+		usleep(10);
 }
 
 void	sleeping(t_philo *philo, t_ctx *ctx)
@@ -126,13 +130,13 @@ void	*one_philo(t_philo *philo, t_ctx *ctx)
 {
 	mxlock(philo->right_fork, philo->ctx);
 	writestatus(philo, "has taken a fork");
-	printf("%ld, %ld \n", gettime(philo->ctx), ctx->t_start + philo->t_last_meal);
+	// printf("	%ld before sleep\n	%ld \n", gettime(philo->ctx), ctx->t_start + philo->t_last_meal);
 	usleep(philo->ctx->t_die * 700);
-	printf("%ld \n", gettime(philo->ctx));
-	while (gettime(philo->ctx) < philo->t_last_meal + philo->ctx->t_die)
+	// printf("	%ld after sleep\n", gettime(philo->ctx));
+	while (gettime(philo->ctx) < ctx->t_start + philo->t_last_meal + philo->ctx->t_die)
 	{
 		usleep(10);
-		printf("sleeping\n");
+		// printf("sleeping\n");
 	}
 		
 	mxunlock(philo->right_fork, philo->ctx);
@@ -152,6 +156,8 @@ void	*routine(void *arg)
 	if (ctx->n_philos == 1)
 		return (one_philo(philo, ctx));
 	queue_threads(philo, ctx);
+	// printf("	%ld start\n", ctx->t_start);
+	// printf("	%ld real start\n", gettime(ctx));
 	while (true)
 	{
 		eating(philo, ctx);
