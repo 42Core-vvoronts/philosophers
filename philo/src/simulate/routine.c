@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/19 16:37:44 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:05:29 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ bool	everyone_full(t_ctx *ctx, t_philo *philo)
 }
 
 /**
- * @brief Enhance usleep
+ * @brief Enhanced usleep
  * 
  * @param philo to sleep
  * @param t_act duration of current action
@@ -49,11 +49,9 @@ void	esleep(t_philo *philo, long t_act)
 {
 	long	t_wake;
 
-	// printf("	%ld start\n 	%ld last\n	%ld die\n 	%ld now\n", philo->ctx->t_start, philo->t_last_meal, philo->ctx->t_die, philo->t_now);
 	philo->t_remain = philo->t_last_meal + philo->ctx->t_die - philo->t_now;
 	if (philo->t_remain <= 0)
 		return;
-	// printf("	%ld before sleep\n", gettime(philo->ctx));
 	if (philo->t_remain >= t_act)
 	{
 		usleep(t_act * 700);
@@ -65,10 +63,7 @@ void	esleep(t_philo *philo, long t_act)
 		t_wake = philo->ctx->t_start + philo->t_now + philo->t_remain;
 		
 	}
-	// printf("	%ld after sleep\n", gettime(philo->ctx));
-	// printf("	%ld wake\n", t_wake);
-	// printf("	%ld remain\n", philo->t_remain);
-	while (gettime(philo->ctx) < t_wake)
+	while (gettime(philo->ctx) <= t_wake)
 		usleep(10);
 }
 
@@ -130,15 +125,9 @@ void	*one_philo(t_philo *philo, t_ctx *ctx)
 {
 	mxlock(philo->right_fork, philo->ctx);
 	writestatus(philo, "has taken a fork");
-	// printf("	%ld before sleep\n	%ld \n", gettime(philo->ctx), ctx->t_start + philo->t_last_meal);
 	usleep(philo->ctx->t_die * 700);
-	// printf("	%ld after sleep\n", gettime(philo->ctx));
 	while (gettime(philo->ctx) < ctx->t_start + philo->t_last_meal + philo->ctx->t_die)
-	{
 		usleep(10);
-		// printf("sleeping\n");
-	}
-		
 	mxunlock(philo->right_fork, philo->ctx);
 	writestatus(philo, "is dead");
 	ctx->f_end = true;
