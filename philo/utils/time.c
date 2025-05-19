@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:56:16 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 19:44:28 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 11:19:14 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,16 @@
  * 
  * @return long Current time in ms (milliseconds)
  */
-long	gettime(t_ctx *ctx)
+long    gettime(t_ctx *ctx)
 {
-	long			time;
-	struct timeval	rawtime;
+	struct timeval 	rawtime;
+	long			milliseconds;
 
 	if (gettimeofday(&rawtime, NULL) == -1)
+	{
 		ft_exit(FAIL, "gettimeofday() error\n", ctx);
-	time = rawtime.tv_sec * 1000 + rawtime.tv_usec / 1000;
-	return (time);
+		return (FAIL);
+	}
+	milliseconds = rawtime.tv_sec * 1000 + rawtime.tv_usec / 1000;
+	return (milliseconds);
 }

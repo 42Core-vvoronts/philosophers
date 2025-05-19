@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 19:41:26 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 10:33:24 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,16 +45,19 @@ typedef struct s_ctx
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		*uni_lock;
 	pthread_mutex_t		*write_lock;
-	bool				f_end;
-	bool				f_ready;
-	bool				f_error;
-	long				t_start;
 	int					n_philos;
+	int					n_full;
+	int					n_meals;
 	long				t_die;
 	long				t_eat;
 	long				t_sleep;
 	long				t_think;
-	int					n_meals;
+	long				t_start;
+	long				t_end;
+	bool				f_ready;
+	bool				f_end;
+	bool				f_death;
+	bool				f_error;
 }	t_ctx;
 
 
