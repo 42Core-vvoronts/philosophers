@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/19 14:54:47 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 15:26:16 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ bool	everyone_full(t_ctx *ctx, t_philo *philo)
 	if (ctx->n_philos != ctx->n_full)
 		return (false);
 	mxlock(ctx->die_lock, ctx);
-	ctx->f_end = true;
+	philo->ctx->f_end = true;
 	// printf("	%d full set flag true\n", philo->id);
 	mxunlock(ctx->die_lock, ctx);
 	return (true);
@@ -47,16 +47,25 @@ bool	everyone_full(t_ctx *ctx, t_philo *philo)
  */
 void	esleep(t_philo *philo, long t_act)
 {
+	// long	t_wake;
+
 	philo->t_remain = philo->t_last_meal + philo->ctx->t_die - philo->t_now;
 	if (philo->t_remain <= 0)
 		return;
 	
 	if (philo->t_remain >= t_act)
+	{
 		usleep(t_act * 1000);
+		// t_wake = philo->t_now + t_act;
+	}
 	else
 	{
-		usleep(philo->t_remain * 1000);
+		usleep(philo->t_remain *1000);
+		// t_wake = philo->t_now + philo->t_remain;
+		
 	}
+	// while (gettime(philo->ctx) < t_wake)
+		// usleep(10);
 }
 
 void	sleeping(t_philo *philo, t_ctx *ctx)
@@ -117,7 +126,15 @@ void	*one_philo(t_philo *philo, t_ctx *ctx)
 {
 	mxlock(philo->right_fork, philo->ctx);
 	writestatus(philo, "has taken a fork");
-	usleep(philo->ctx->t_die * 1000);
+	printf("%ld, %ld \n", gettime(philo->ctx), ctx->t_start + philo->t_last_meal);
+	usleep(philo->ctx->t_die * 700);
+	printf("%ld \n", gettime(philo->ctx));
+	while (gettime(philo->ctx) < philo->t_last_meal + philo->ctx->t_die)
+	{
+		usleep(10);
+		printf("sleeping\n");
+	}
+		
 	mxunlock(philo->right_fork, philo->ctx);
 	writestatus(philo, "is dead");
 	ctx->f_end = true;
@@ -137,15 +154,15 @@ void	*routine(void *arg)
 	queue_threads(philo, ctx);
 	while (true)
 	{
+		eating(philo, ctx);
+		sleeping(philo, ctx);
+		thinking(philo, ctx);
 		mxlock(ctx->die_lock, ctx);
 		if (ctx->f_end) {
 			mxunlock(ctx->die_lock, ctx);
 			break ;
 		}
 		mxunlock(ctx->die_lock, ctx);
-		eating(philo, ctx);
-		sleeping(philo, ctx);
-		thinking(philo, ctx);
 	}
 	return NULL;
 }
