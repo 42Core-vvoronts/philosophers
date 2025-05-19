@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 19:42:21 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 17:57:54 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,17 @@ void queue_threads(t_philo *philo, t_ctx *ctx)
 
 void	wait_threads(t_ctx *ctx)
 {
-	while (ctx->f_ready == false)
-		usleep(100);
+	while (true)
+	{
+		mxlock(ctx->uni_lock, ctx);
+		if (ctx->f_ready == true)
+		{
+			mxunlock(ctx->uni_lock, ctx);
+			break ;
+		}
+		mxunlock(ctx->uni_lock, ctx);
+		usleep(10);
+	}
 	if (ctx->t_start == 0)
 	{
 		mxlock(ctx->uni_lock, ctx);
@@ -68,7 +77,9 @@ void	simulate(t_ctx *ctx)
 		create_thread(&ctx->philos[i], routine, (void *)&ctx->philos[i], ctx);
 		i++;
 	}
+	mxlock(ctx->uni_lock, ctx);
 	ctx->f_ready = true;
+	mxunlock(ctx->uni_lock, ctx);
 	i = 0;
 	while (i < ctx->n_philos)
 	{
