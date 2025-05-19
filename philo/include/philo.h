@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/19 10:33:24 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:40:54 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ typedef struct s_philo
 	pthread_mutex_t		*left_fork;
 	pthread_mutex_t		*right_fork;
 	long				t_last_meal;
+	long				t_remain;
 	long				t_now;
 	int					n_meals;
 	t_ctx				*ctx;
@@ -44,6 +45,7 @@ typedef struct s_ctx
 	t_philo				*philos;
 	pthread_mutex_t		*forks;
 	pthread_mutex_t		*uni_lock;
+	pthread_mutex_t		*die_lock;
 	pthread_mutex_t		*write_lock;
 	int					n_philos;
 	int					n_full;

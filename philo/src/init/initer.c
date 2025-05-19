@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 19:38:04 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/19 13:41:25 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ t_ctx	*init(char **argv)
 		ctx->t_think = ctx->t_eat - ctx->t_sleep;
 	if (argv[5])
 		ctx->n_meals = ft_atol(argv[5]);
+	ctx->die_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
 	ctx->uni_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
 	ctx->write_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
 	ctx->forks = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t) * ctx->n_philos, ctx);
@@ -75,6 +76,7 @@ t_ctx	*init(char **argv)
 	i = 0;
 	while (i < ctx->n_philos && ctx->f_error == false)
 		mxinit(&ctx->forks[i++], ctx);
+	mxinit(ctx->die_lock, ctx);
 	mxinit(ctx->uni_lock, ctx);
 	mxinit(ctx->write_lock, ctx);
 	ctx->philos = (t_philo *)memalloc(sizeof(t_philo) * ctx->n_philos, ctx);
