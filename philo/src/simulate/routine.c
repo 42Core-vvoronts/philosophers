@@ -6,11 +6,23 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/19 20:03:02 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:48:14 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+bool	is_end(t_philo *philo, t_ctx *ctx)
+{
+	mxlock(ctx->die_lock, ctx);
+	if (philo->ctx->f_end == true)
+	{
+		mxunlock(ctx->die_lock, ctx);
+		return (true);
+	}
+	mxunlock(ctx->die_lock, ctx);
+	return (false);
+}
 
 void	writedeath(t_philo *philo)
 {
@@ -93,11 +105,6 @@ void	esleep(t_philo *philo, long t_act)
 		while (gettime(philo->ctx) < t_wake)
 			usleep(10);
 		writedeath(philo);
-		// mxlock(philo->ctx->die_lock, philo->ctx);
-		// philo->ctx->f_end = true;
-		// // printf("	%d died set flag true\n", philo->id);
-		// writestatus(philo, "is dead");
-		// mxunlock(philo->ctx->die_lock, philo->ctx);
 		return ;
 		
 	}
@@ -106,15 +113,8 @@ void	esleep(t_philo *philo, long t_act)
 
 void	sleeping(t_philo *philo, t_ctx *ctx)
 {
-	if (is_dead(philo))
+	if (is_dead(philo) || is_end(philo, ctx) == true)
 		return ;
-	mxlock(philo->ctx->die_lock, philo->ctx);
-	if (philo->ctx->f_end == true)
-	{
-		mxunlock(philo->ctx->die_lock, philo->ctx);
-		return ;
-	}
-	mxunlock(philo->ctx->die_lock, philo->ctx);
 	writestatus(philo, "is sleeping");
 	esleep(philo, ctx->t_sleep);
 	if (is_dead(philo) || everyone_full(ctx, philo))
@@ -123,15 +123,8 @@ void	sleeping(t_philo *philo, t_ctx *ctx)
 
 void	thinking(t_philo *philo, t_ctx *ctx)
 {
-	if (is_dead(philo))
+	if (is_dead(philo) || is_end(philo, ctx) == true)
 		return ;
-	mxlock(philo->ctx->die_lock, philo->ctx);
-	if (philo->ctx->f_end == true)
-	{
-		mxunlock(philo->ctx->die_lock, philo->ctx);
-		return ;
-	}
-	mxunlock(philo->ctx->die_lock, philo->ctx);
 	writestatus(philo, "is thinking");
 	if (ctx->n_philos % 2 == 0)
 		usleep(1);
@@ -141,19 +134,9 @@ void	thinking(t_philo *philo, t_ctx *ctx)
 		return ;
 }
 
-void	eating(t_philo *philo, t_ctx *ctx)
+void	acquire_forks(t_philo *philo)
 {
-	if (is_dead(philo))
-		return ;
-	mxlock(philo->ctx->die_lock, philo->ctx);
-	if (philo->ctx->f_end == true)
-	{
-		mxunlock(philo->ctx->die_lock, philo->ctx);
-		return ;
-	}
-	mxunlock(philo->ctx->die_lock, philo->ctx);
-	
-	if (philo->id != ctx->n_philos)
+	if (philo->id != philo->ctx->n_philos)
 	{
 		mxlock(philo->right_fork, philo->ctx);
 		mxlock(philo->left_fork, philo->ctx);
@@ -163,47 +146,47 @@ void	eating(t_philo *philo, t_ctx *ctx)
 		mxlock(philo->left_fork, philo->ctx);
 		mxlock(philo->right_fork, philo->ctx);
 	}
-	
-	mxlock(philo->ctx->die_lock, philo->ctx);
-	if (philo->ctx->f_end == true)
+}
+void	release_forks(t_philo *philo)
+{
+	if (philo->id != philo->ctx->n_philos)
 	{
-		mxunlock(philo->ctx->die_lock, philo->ctx);
-		if (philo->id != ctx->n_philos)
-		{
-			mxunlock(philo->right_fork, philo->ctx);
-			mxunlock(philo->left_fork, philo->ctx);
-		}
-		else
-		{
-			mxunlock(philo->left_fork, philo->ctx);
-			mxunlock(philo->right_fork, philo->ctx);
-		}
+		mxunlock(philo->right_fork, philo->ctx);
+		mxunlock(philo->left_fork, philo->ctx);
+	}
+	else
+	{
+		mxunlock(philo->left_fork, philo->ctx);
+		mxunlock(philo->right_fork, philo->ctx);
+	}
+}
+
+void	register_as_full(t_ctx *ctx)
+{
+	mxlock(ctx->uni_lock, ctx);
+	ctx->n_full++;
+	mxunlock(ctx->uni_lock, ctx);
+}
+
+void	eating(t_philo *philo, t_ctx *ctx)
+{
+	if (is_dead(philo) || is_end(philo, ctx) == true)
+		return ;
+	acquire_forks(philo);
+	if (is_end(philo, ctx) == true)
+	{
+		release_forks(philo);
 		return ;
 	}
-
 	writestatus(philo, "has taken a fork");
 	writestatus(philo, "has taken a fork");
 	writestatus(philo, "is eating");
-	
 	philo->t_last_meal = philo->t_now;
 	philo->n_meals++;
 	if (philo->n_meals == ctx->n_meals)
-	{
-		mxlock(ctx->uni_lock, ctx);
-		ctx->n_full++;
-		mxunlock(ctx->uni_lock, ctx);
-	}
+		register_as_full(ctx);
 	esleep(philo, ctx->t_eat);
-	if (philo->id != ctx->n_philos)
-	{
-		mxunlock(philo->right_fork, philo->ctx);
-		mxunlock(philo->left_fork, philo->ctx);
-	}
-	else
-	{
-		mxunlock(philo->left_fork, philo->ctx);
-		mxunlock(philo->right_fork, philo->ctx);
-	}
+	release_forks(philo);
 	if (is_dead(philo) || everyone_full(ctx, philo))
 		return ;
 }
