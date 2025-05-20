@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 15:04:00 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/20 15:10:13 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,16 @@ void	init_philo(t_ctx *ctx, int i)
 		philo->t_think = ctx->t_eat - ctx->t_sleep;
 	else if (ctx->n_philos % 2 == 1)
 	{
-		philo->t_think = ctx->t_eat;
-		if (ctx->t_eat > ctx->t_sleep)
-			philo->t_think += ctx->t_eat - ctx->t_sleep;
+		if (ctx->t_eat == ctx->t_sleep)
+		{
+			philo->t_think = ctx->t_eat;
+		}
+		else if (ctx->t_eat > ctx->t_sleep)
+			philo->t_think = ctx->t_eat + (ctx->t_eat - ctx->t_sleep);
 	}
 	else
 		philo->t_think = 0;
+	printf("	%d: %ld\n", philo->id, philo->t_think);
 }
 
 /**
