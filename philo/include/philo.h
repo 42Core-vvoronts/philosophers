@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 14:07:13 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:32:51 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ typedef struct s_philo
 	long				t_last_meal;
 	long				t_remain;
 	long				t_now;
+	long				t_think;
 	int					n_meals;
 	t_ctx				*ctx;
 }	t_philo;

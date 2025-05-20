@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 14:05:31 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:35:20 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,23 @@ void	sleeping(t_philo *philo, t_ctx *ctx)
 		return ;
 }
 
+/**
+ * @brief Think routine
+ * 
+ * For even: eat - sleep, but if < 0 do not think
+ * For odd: 2 * eat - sleep but if < 0 do not think
+ * @param philo current philo
+ * @param ctx context of programm
+ */
 void	thinking(t_philo *philo, t_ctx *ctx)
 {
 	if (is_end(philo, ctx) || is_dead(philo))
 		return ;
 	writestatus(philo, "is thinking");
-	if (ctx->n_philos % 2 == 0)
+	if (philo->t_think == 0)
 		usleep(1);
 	else
-		esleep(philo, ctx->t_eat*2);
+		esleep(philo, philo->t_think);
 	if (is_dead(philo) || everyone_full(ctx, philo))
 		return ;
 }
