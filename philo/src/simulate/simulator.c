@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 13:31:11 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/20 13:58:49 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void queue_threads(t_philo *philo, t_ctx *ctx)
 {	
-	if (philo->id % 2 == 0)
+	if (philo->id % 2 == 1 && philo->id == ctx->n_philos)
+		esleep(philo, ctx->t_eat * 2);
+	else if (philo->id % 2 == 1)
 		return ;
-	usleep(ctx->t_eat * 1000);
-	if (philo->id != ctx->n_philos)
-		return ;
-	usleep(ctx->t_eat * 1000);
+	else
+		esleep(philo, ctx->t_eat * 1);
 }
 
 void	wait_threads(t_ctx *ctx)

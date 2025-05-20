@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/19 13:40:54 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/20 14:07:13 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,14 @@ void	init_philo(t_ctx *ctx, int i);
 void	destroy(t_ctx *ctx);
 // rub
 void	simulate(t_ctx *ctx);
-void	*routine(void *arg);
 void	wait_threads(t_ctx *ctx);
 void	queue_threads(t_philo *philo, t_ctx *ctx);
+void	*routine(void *arg);
+bool	is_end(t_philo *philo, t_ctx *ctx);
+bool	is_dead(t_philo *philo);
+void	register_as_full(t_ctx *ctx);
+bool	everyone_full(t_ctx *ctx, t_philo *philo);
+
 // mutex wrappers
 int		mxinit(pthread_mutex_t *lock, t_ctx *ctx);
 int		mxdestroy(pthread_mutex_t *lock, t_ctx *ctx);
@@ -80,10 +85,12 @@ int		mxlock(pthread_mutex_t *lock, t_ctx *ctx);
 int		mxunlock(pthread_mutex_t *lock, t_ctx *ctx);
 // utils
 void	*memalloc(size_t size, void *ctx);
+void	esleep(t_philo *philo, long t_act);
 int		ft_exit(int err, const char *msg, t_ctx *ctx);
 long	ft_atol(const char *str);
 long	ft_strlen(const char *str);
 void	writestatus(t_philo *philo, char *str);
+void	writedeath(t_philo *philo);
 void	writestd(const char *msg, int std);
 long	gettime(t_ctx *ctx);
 
