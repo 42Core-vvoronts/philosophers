@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 09:43:20 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 10:14:54 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ void	*memalloc(size_t size, void *ctx)
 	return (ptr);
 }
 
+/**
+ * @brief Initialize each philo
+ * 
+ * @param ctx pointer to context
+ * @param i philo index
+ * 
+ * printf("	%d: %ld\n", philo->id, philo->t_think);
+ */
 void	init_philo(t_ctx *ctx, int i)
 {
 	t_philo	*philo;
@@ -47,7 +55,6 @@ void	init_philo(t_ctx *ctx, int i)
 		philo->t_think = ctx->t_eat + (ctx->t_eat - ctx->t_sleep);
 	else
 		philo->t_think = 0;
-	printf("	%d: %ld\n", philo->id, philo->t_think);
 }
 
 /**
