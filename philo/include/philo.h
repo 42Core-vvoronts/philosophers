@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 12:03:46 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:23:59 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,9 @@ void	simulate(t_ctx *ctx);
 void	wait_threads(t_ctx *ctx);
 void	queue_threads(t_philo *philo, t_ctx *ctx);
 void	*routine(void *arg);
+void	eating(t_philo *philo, t_ctx *ctx);
+void	sleeping(t_philo *philo, t_ctx *ctx);
+void	thinking(t_philo *philo, t_ctx *ctx);
 bool	is_end(t_philo *philo, t_ctx *ctx);
 bool	is_dead(t_philo *philo);
 void	register_as_full(t_ctx *ctx);
