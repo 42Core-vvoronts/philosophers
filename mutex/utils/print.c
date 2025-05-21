@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:18:50 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 11:51:04 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:04:30 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,6 @@ void	writedeath(t_philo *philo)
 	philo->ctx->f_end = true;
 	mxunlock(philo->ctx->die_lock, philo->ctx);
 	philo->t_now = gettime(philo->ctx) - philo->ctx->t_start;
-	printf("%011ld %d %s\n", philo->t_now, philo->id, "is dead");
+	printf("%011ld %d %s\n", philo->t_now, philo->id, "died");
 	mxunlock(philo->ctx->write_lock, philo->ctx);
 }
