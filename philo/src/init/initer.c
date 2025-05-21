@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 15:10:13 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 09:43:20 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,10 @@ void	init_philo(t_ctx *ctx, int i)
 	philo->left_fork = &ctx->forks[(i + 1) % ctx->n_philos];
 	if (ctx->n_philos % 2 == 0 && ctx->t_eat > ctx->t_sleep)
 		philo->t_think = ctx->t_eat - ctx->t_sleep;
-	else if (ctx->n_philos % 2 == 1)
-	{
-		if (ctx->t_eat == ctx->t_sleep)
-		{
-			philo->t_think = ctx->t_eat;
-		}
-		else if (ctx->t_eat > ctx->t_sleep)
-			philo->t_think = ctx->t_eat + (ctx->t_eat - ctx->t_sleep);
-	}
+	else if (ctx->n_philos % 2 == 1 && ctx->t_eat == ctx->t_sleep)
+		philo->t_think = ctx->t_eat;
+	else if (ctx->n_philos % 2 == 1  && ctx->t_eat > ctx->t_sleep)
+		philo->t_think = ctx->t_eat + (ctx->t_eat - ctx->t_sleep);
 	else
 		philo->t_think = 0;
 	printf("	%d: %ld\n", philo->id, philo->t_think);
