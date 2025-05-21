@@ -2,11 +2,10 @@
 
 Two implementations of the Dining philosophers problem:
 
-
 > [!WARNING]
-> Project is not finished yet
+> Part with semaphores is not finished yet
 
-- Thread-safe implementation using mutexes
+- Thread-based implementation using mutexes
 - Process-based implementation using semaphores
 
 ## Introduction
@@ -30,12 +29,13 @@ To install and run the project, follow these steps:
 2. Navigate to the project directory:
 
    ```sh
-   cd philosophers/thread_mutex
+   cd philosophers/mutex
    ```
 
    or
+
    ```sh
-   cd philosophers/process_semaphores
+   cd philosophers/semaphore
    ```
 3. Compile the project:
 
