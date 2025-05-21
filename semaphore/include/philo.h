@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 19:08:47 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:13:35 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ typedef struct s_ctx
 	long				t_eat;
 	long				t_sleep;
 	long				t_start;
+	long				t_t_delta;
 	long				t_end;
 	bool				f_ready;
 	bool				f_end;

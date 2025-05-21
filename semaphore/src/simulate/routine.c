@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 19:09:34 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:14:44 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,27 +44,10 @@ void	queue_philos(t_philo *philo, t_ctx *ctx)
 
 void	wait_philos_ready(t_ctx *ctx)
 {
-	smwait
-	while (true)
-	{
-		smwait(ctx->uni_lock, ctx);
-		if (ctx->f_ready == true)
-		{
-			smpost(ctx->uni_lock, ctx);
-			break ;
-		}
-		smpost(ctx->uni_lock, ctx);
-		usleep(1);
-	}
-	if (ctx->t_start == 0)
-	{
-		smwait(ctx->uni_lock, ctx);
-		if (!ctx->t_start)
-			ctx->t_start = gettime(ctx);
-		smpost(ctx->uni_lock, ctx);
-	}
+	smwait(ctx->go, ctx);
+	ctx->t_delta = gettime(ctx)- ctx->start;
+	smpost(ctx->uni_lock, ctx);
 }
-
 /**
  * @brief Routine 
  * 
