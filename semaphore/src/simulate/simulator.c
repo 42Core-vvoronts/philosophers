@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 12:02:04 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:37:38 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void	create_thread(t_philo *p, void *(*f)(void *), void *arg, t_ctx *ctx)
 {
 	int		code;
 
-	code = pthread_create(&p->id_pthread, NULL, f, arg);
+	code = pthread_create(&p->tid, NULL, f, arg);
 	if (code != SUCCESS)
 		ft_exit(FAIL, "pthread_create", ctx);
 }
@@ -83,7 +83,7 @@ void	simulate(t_ctx *ctx)
 	i = 0;
 	while (i < ctx->n_philos)
 	{
-		join_thread(&ctx->philos[i].id_pthread, ctx);
+		join_thread(&ctx->philos[i].tid, ctx);
 		i++;
 	}
 }

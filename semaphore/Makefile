@@ -6,7 +6,7 @@
 #    By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 10:32:04 by vvoronts          #+#    #+#              #
-#    Updated: 2025/05/21 12:23:02 by vvoronts         ###   ########.fr        #
+#    Updated: 2025/05/21 14:21:16 by vvoronts         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CFLAGS				=	-Wall -Wextra -Werror -Wunreachable-code -g -MMD -MF
 RM					=	rm -rf
 
 # Name of the output library
-NAME				=	philo
+NAME				=	philo_bonus
 
 # Source directories
 VPATH				=	\

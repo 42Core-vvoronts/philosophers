@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 12:23:59 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:37:18 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,16 @@
 # define PHILO_H
 
 # include <string.h>     // memset
-# include <stdio.h>      // prlongf
+# include <unistd.h>     //fork(), exec()
+# include <sys/wait.h>   // wait(), waitpid()
+# include <signal.h>     // kill()
+# include <pthread.h>    // pthread_* functions
+# include <semaphore.h>  // semaphores
 # include <stdlib.h>     // malloc, free
 # include <unistd.h>     // write, usleep
 # include <sys/time.h>   // gettimeofday
-# include <pthread.h>    // pthread_* functions
 # include <stdbool.h>    // bool type
+# include <stdio.h>      // 
 
 # define MAXPH 200
 # define FAIL -1
@@ -30,9 +34,8 @@ typedef struct s_ctx	t_ctx;
 typedef struct s_philo
 {
 	int					id;
-	pthread_t			id_pthread;
-	pthread_mutex_t		*left_fork;
-	pthread_mutex_t		*right_fork;
+	pthread_t			pid;
+	pthread_t			tid;
 	long				t_last_meal;
 	long				t_remain;
 	long				t_now;
@@ -44,10 +47,10 @@ typedef struct s_philo
 typedef struct s_ctx
 {
 	t_philo				*philos;
-	pthread_mutex_t		*forks;
-	pthread_mutex_t		*uni_lock;
-	pthread_mutex_t		*die_lock;
-	pthread_mutex_t		*write_lock;
+	sem_t				*forks;
+	sem_t				*die_lock;
+	sem_t				*uni_lock;
+	sem_t				*write_lock;
 	int					n_philos;
 	int					n_full;
 	int					n_meals;
@@ -77,11 +80,12 @@ bool	is_end(t_philo *philo, t_ctx *ctx);
 bool	is_dead(t_philo *philo);
 void	register_as_full(t_ctx *ctx);
 bool	everyone_full(t_ctx *ctx, t_philo *philo);
-// mutex wrappers
-int		mxinit(pthread_mutex_t *lock, t_ctx *ctx);
-int		mxdestroy(pthread_mutex_t *lock, t_ctx *ctx);
-int		mxlock(pthread_mutex_t *lock, t_ctx *ctx);
-int		mxunlock(pthread_mutex_t *lock, t_ctx *ctx);
+// sem wrappers
+int		sminit(sem_t *sem, unsigned int val, t_ctx *ctx);
+int		smdestroy(sem_t *sem, t_ctx *ctx);
+int		smwait(sem_t *sem, t_ctx *ctx);
+int		smpost(sem_t *sem, t_ctx *ctx);
+int		smunlink(const char *name, t_ctx *ctx);
 // utils
 void	*memalloc(size_t size, void *ctx);
 void	esleep(t_philo *philo, long t_act);

@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 12:25:02 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 14:35:37 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,20 @@ void	save_program_input(t_ctx *ctx, char **argv)
 		ctx->n_meals = ft_atol(argv[5]);
 }
 
-bool	alloc_mutexes(t_ctx *ctx)
+bool	alloc_semaphores(t_ctx *ctx)
 {
-	int	n;
-
-	n = ctx->n_philos;
-	ctx->die_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
-	ctx->uni_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
-	ctx->write_lock = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t), ctx);
-	ctx->forks = (pthread_mutex_t *)memalloc(sizeof(pthread_mutex_t) * n, ctx);
-	if (!ctx->forks || !ctx->uni_lock || !ctx->write_lock || !ctx->die_lock)
-	{
-		ft_exit(FAIL, "malloc()", ctx);
-		return (false);
-	}
-	return (true);
+	ctx->die_lock = (sem_t *)memalloc(sizeof(sem_t), ctx);
+	ctx->uni_lock = (sem_t *)memalloc(sizeof(sem_t), ctx);
+	ctx->write_lock = (sem_t *)memalloc(sizeof(sem_t), ctx);
+	ctx->forks = (sem_t *)memalloc(sizeof(sem_t), ctx);
+	if (!ctx->die_lock || !ctx->uni_lock || !ctx->write_lock || !ctx->forks)
+		return false;
+	if (sminit(ctx->die_lock, 1, ctx) != SUCCESS || 
+		sminit(ctx->uni_lock, 1, ctx) != SUCCESS || 
+		sminit(ctx->write_lock, 1, ctx) != SUCCESS ||
+		sminit(ctx->forks, ctx->n_philos, ctx) != SUCCESS)
+		return false;
+	return true;
 }
 
 void	*memalloc(size_t size, void *ctx)
@@ -69,13 +68,6 @@ void	init_philo(t_ctx *ctx, int i)
 	philo = &ctx->philos[i];
 	philo->id = i + 1;
 	philo->ctx = ctx;
-	philo->right_fork = &ctx->forks[i];
-	if (ctx->n_philos == 1)
-	{
-		philo->left_fork = NULL;
-		return ;
-	}
-	philo->left_fork = &ctx->forks[(i + 1) % ctx->n_philos];
 	if (ctx->n_philos % 2 == 0 && ctx->t_eat > ctx->t_sleep)
 		philo->t_think = ctx->t_eat - ctx->t_sleep;
 	else if (ctx->n_philos % 2 == 1 && ctx->t_eat == ctx->t_sleep)
@@ -102,14 +94,8 @@ t_ctx	*init(char **argv)
 	if (!ctx)
 		return (NULL);
 	save_program_input(ctx, argv);
-	if (alloc_mutexes(ctx) == false)
+	if (alloc_semaphores(ctx) == false)
 		return (NULL);
-	i = 0;
-	while (i < ctx->n_philos && ctx->f_error == false)
-		mxinit(&ctx->forks[i++], ctx);
-	mxinit(ctx->die_lock, ctx);
-	mxinit(ctx->uni_lock, ctx);
-	mxinit(ctx->write_lock, ctx);
 	ctx->philos = (t_philo *)memalloc(sizeof(t_philo) * ctx->n_philos, ctx);
 	i = 0;
 	while (i < ctx->n_philos && ctx->f_error == false)
