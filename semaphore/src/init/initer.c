@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 14:35:37 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:09:01 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,20 +22,14 @@ void	save_program_input(t_ctx *ctx, char **argv)
 		ctx->n_meals = ft_atol(argv[5]);
 }
 
-bool	alloc_semaphores(t_ctx *ctx)
+void	alloc_semaphores(t_ctx *ctx)
 {
-	ctx->die_lock = (sem_t *)memalloc(sizeof(sem_t), ctx);
-	ctx->uni_lock = (sem_t *)memalloc(sizeof(sem_t), ctx);
-	ctx->write_lock = (sem_t *)memalloc(sizeof(sem_t), ctx);
-	ctx->forks = (sem_t *)memalloc(sizeof(sem_t), ctx);
-	if (!ctx->die_lock || !ctx->uni_lock || !ctx->write_lock || !ctx->forks)
-		return false;
-	if (sminit(ctx->die_lock, 1, ctx) != SUCCESS || 
-		sminit(ctx->uni_lock, 1, ctx) != SUCCESS || 
-		sminit(ctx->write_lock, 1, ctx) != SUCCESS ||
-		sminit(ctx->forks, ctx->n_philos, ctx) != SUCCESS)
-		return false;
-	return true;
+	ctx->die_lock = sminit(SEMDIE, 1, ctx);
+	ctx->ful_lock = sminit(SEMFUL, 1, ctx);
+	ctx->uni_lock = sminit(SEMUNI, 1, ctx);
+	ctx->write_lock = sminit(SEMWRI, 1, ctx);
+	ctx->forks = sminit(SEMFOR, ctx->n_philos, ctx);
+	ctx->go = sminit(SEMGO, 0, ctx);
 }
 
 void	*memalloc(size_t size, void *ctx)
@@ -94,8 +88,7 @@ t_ctx	*init(char **argv)
 	if (!ctx)
 		return (NULL);
 	save_program_input(ctx, argv);
-	if (alloc_semaphores(ctx) == false)
-		return (NULL);
+	alloc_semaphores(ctx);
 	ctx->philos = (t_philo *)memalloc(sizeof(t_philo) * ctx->n_philos, ctx);
 	i = 0;
 	while (i < ctx->n_philos && ctx->f_error == false)

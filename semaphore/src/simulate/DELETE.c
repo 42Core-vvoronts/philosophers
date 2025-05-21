@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:05:13 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 12:31:13 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 18:46:23 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,6 @@ bool	is_end(t_philo *philo, t_ctx *ctx)
 	return (false);
 }
 
-bool	is_dead(t_philo *philo)
-{
-	if (philo->t_now <= philo->t_last_meal + philo->ctx->t_die)
-		return (false);
-	writedeath(philo);
-	return (true);
-}
 
 void	register_as_full(t_ctx *ctx)
 {

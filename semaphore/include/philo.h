@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 14:37:18 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:08:47 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,16 @@
 # include <stdio.h>      // 
 
 # define MAXPH 200
-# define FAIL -1
 # define SUCCESS 0
+# define FAIL -1
+# define FULL 1
+# define DIED 2
+# define SEMFOR "/forks"
+# define SEMDIE "/die"
+# define SEMWRI "/write"
+# define SEMFUL "/full"
+# define SEMUNI "/universal"
+# define SEMGO "/go"
 
 typedef struct s_ctx	t_ctx;
 
@@ -49,8 +57,10 @@ typedef struct s_ctx
 	t_philo				*philos;
 	sem_t				*forks;
 	sem_t				*die_lock;
+	sem_t				*ful_lock;
 	sem_t				*uni_lock;
 	sem_t				*write_lock;
+	sem_t				*go;
 	int					n_philos;
 	int					n_full;
 	int					n_meals;

@@ -6,84 +6,89 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 14:37:38 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 19:07:53 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	queue_threads(t_philo *philo, t_ctx *ctx)
-{
-	if (philo->id % 2 == 1 && philo->id == ctx->n_philos)
-		esleep(philo, ctx->t_eat * 2);
-	else if (philo->id % 2 == 1)
-		return ;
-	else
-		esleep(philo, ctx->t_eat * 1);
-}
 
-void	wait_threads(t_ctx *ctx)
-{
-	while (true)
-	{
-		mxlock(ctx->uni_lock, ctx);
-		if (ctx->f_ready == true)
-		{
-			mxunlock(ctx->uni_lock, ctx);
-			break ;
-		}
-		mxunlock(ctx->uni_lock, ctx);
-		usleep(10);
-	}
-	if (ctx->t_start == 0)
-	{
-		mxlock(ctx->uni_lock, ctx);
-		if (!ctx->t_start)
-			ctx->t_start = gettime(ctx);
-		mxunlock(ctx->uni_lock, ctx);
-	}
-}
 
-static void	create_thread(t_philo *p, void *(*f)(void *), void *arg, t_ctx *ctx)
-{
-	int		code;
-
-	code = pthread_create(&p->tid, NULL, f, arg);
-	if (code != SUCCESS)
-		ft_exit(FAIL, "pthread_create", ctx);
-}
-
-static void	join_thread(pthread_t *philo, t_ctx *ctx)
-{
-	int		code;
-
-	code = pthread_join(*philo, NULL);
-	if (code != SUCCESS)
-		ft_exit(code, "pthread_join", ctx);
-}
-
-/**
- * @brief Creates and joins threads for each philosopher 
- * 
- * @param ctx Context of programm
- */
-void	simulate(t_ctx *ctx)
+void    kill_all_philos(t_ctx *ctx)
 {
 	int	i;
 
 	i = 0;
 	while (i < ctx->n_philos)
 	{
-		create_thread(&ctx->philos[i], routine, (void *)&ctx->philos[i], ctx);
+		if (ctx->philos[i].pid != 0)
+			kill(ctx->philos[i].pid, SIGKILL);
 		i++;
 	}
-	mxlock(ctx->uni_lock, ctx);
-	ctx->f_ready = true;
-	mxunlock(ctx->uni_lock, ctx);
+}
+
+void	fork_philos(t_ctx *ctx)
+{
+	int		i;
+	pid_t	pid;
+
+	
 	i = 0;
+	ctx->t_start = gettime(ctx);
 	while (i < ctx->n_philos)
 	{
-		join_thread(&ctx->philos[i].tid, ctx);
-		i++;
+		pid = fork();
+		if (pid == -1)
+		{
+			kill_all_philos(ctx);
+			ft_exit(FAIL, "fork", ctx);
+			return ;
+		}
+		else if (pid == 0)
+		{
+			routine(ctx->philos[i], ctx);
+		}
+		ctx->philos[i].pid = pid;
 	}
+	smpost(SEMGO, ctx);
+}
+
+void	monitor_philos(t_ctx *ctx)
+{
+	int		i;
+	int		status;
+	pid_t	pid;
+
+	while (1)
+	{
+		pid = waitpid(-1, &status, WNOHANG);
+		if (pid == -1)
+			break ;
+		if (WIFEXITED(status) && WEXITSTATUS(status) == DIED)
+		{
+			kill_all_philos(ctx);
+			break;
+		}
+		else if (WIFEXITED(status) && WEXITSTATUS(status) == FULL)
+		{
+			ctx->n_full++;
+			if (ctx->n_meals > 0 && ctx->n_full >= ctx->n_philos)
+			{
+				kill_all_philos(ctx);
+				break;
+			}
+		}
+	}	
+}
+
+
+/**
+ * @brief Creates and joins threads for each philosopher 
+ * 
+ * @param ctx Context of programm
+ */
+void    simulate(t_ctx *ctx)
+{
+	fork_philos(ctx);
+	monitor_philos(ctx);
 }
