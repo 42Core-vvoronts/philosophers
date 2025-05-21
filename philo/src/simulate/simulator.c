@@ -6,14 +6,14 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 13:58:49 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:02:04 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void queue_threads(t_philo *philo, t_ctx *ctx)
-{	
+void	queue_threads(t_philo *philo, t_ctx *ctx)
+{
 	if (philo->id % 2 == 1 && philo->id == ctx->n_philos)
 		esleep(philo, ctx->t_eat * 2);
 	else if (philo->id % 2 == 1)
@@ -44,10 +44,11 @@ void	wait_threads(t_ctx *ctx)
 	}
 }
 
-static void	create_thread(t_philo *philo, void *(*routine)(void *), void *arg, t_ctx *ctx)
+static void	create_thread(t_philo *p, void *(*f)(void *), void *arg, t_ctx *ctx)
 {
 	int		code;
-	code = pthread_create(&philo->id_pthread, NULL, routine, arg);
+
+	code = pthread_create(&p->id_pthread, NULL, f, arg);
 	if (code != SUCCESS)
 		ft_exit(FAIL, "pthread_create", ctx);
 }
@@ -55,9 +56,10 @@ static void	create_thread(t_philo *philo, void *(*routine)(void *), void *arg, t
 static void	join_thread(pthread_t *philo, t_ctx *ctx)
 {
 	int		code;
+
 	code = pthread_join(*philo, NULL);
 	if (code != SUCCESS)
-		ft_exit(code, "pthread_join", ctx);	
+		ft_exit(code, "pthread_join", ctx);
 }
 
 /**
@@ -84,5 +86,4 @@ void	simulate(t_ctx *ctx)
 		join_thread(&ctx->philos[i].id_pthread, ctx);
 		i++;
 	}
-	
 }

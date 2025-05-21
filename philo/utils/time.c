@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:56:16 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 15:32:34 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:50:22 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
  * 
  * @return long Current time in ms (milliseconds)
  */
-long    gettime(t_ctx *ctx)
+long	gettime(t_ctx *ctx)
 {
-	struct timeval 	rawtime;
+	struct timeval	rawtime;
 	long			milliseconds;
 
 	if (gettimeofday(&rawtime, NULL) == -1)
@@ -43,29 +43,24 @@ void	esleep(t_philo *philo, long t_act)
 {
 	long	t_wake;
 
-	// printf("	act %ld -> ", t_act);
-	
 	philo->t_remain = philo->t_last_meal + philo->ctx->t_die - philo->t_now;
 	if (philo->t_remain <= 0)
 		return ;
-
 	if (philo->t_remain >= t_act)
 	{
 		usleep(t_act * 700);
 		t_wake = philo->ctx->t_start + philo->t_now + t_act;
-		// printf("%d: t_now=%ld t_act=%ld t_wake=%ld gettime=%ld\n", philo->id, philo->t_now, t_act, t_wake, gettime(philo->ctx));
-
 		while (gettime(philo->ctx) < t_wake)
 			usleep(10);
 		return ;
 	}
 	else
 	{
-		usleep(philo->t_remain *700);
+		usleep(philo->t_remain * 700);
 		t_wake = philo->ctx->t_start + philo->t_now + philo->t_remain;
 		while (gettime(philo->ctx) < t_wake)
 			usleep(10);
 		writedeath(philo);
-		return ;	
+		return ;
 	}
 }

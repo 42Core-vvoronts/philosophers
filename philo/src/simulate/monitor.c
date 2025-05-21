@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:05:13 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 14:06:54 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:59:47 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@ bool	is_end(t_philo *philo, t_ctx *ctx)
 	mxunlock(ctx->die_lock, ctx);
 	return (false);
 }
+
 bool	is_dead(t_philo *philo)
-{	
+{
 	if (philo->t_now <= philo->t_last_meal + philo->ctx->t_die)
 		return (false);
 	writedeath(philo);
@@ -37,6 +38,7 @@ void	register_as_full(t_ctx *ctx)
 	ctx->n_full++;
 	mxunlock(ctx->uni_lock, ctx);
 }
+
 bool	everyone_full(t_ctx *ctx, t_philo *philo)
 {
 	mxlock(philo->ctx->uni_lock, philo->ctx);
@@ -46,7 +48,6 @@ bool	everyone_full(t_ctx *ctx, t_philo *philo)
 		return (false);
 	}
 	mxunlock(philo->ctx->uni_lock, philo->ctx);
-	
 	mxlock(philo->ctx->die_lock, philo->ctx);
 	if (philo->ctx->f_end == true)
 	{

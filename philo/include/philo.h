@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/20 14:32:51 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 12:03:46 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # define FAIL -1
 # define SUCCESS 0
 
-typedef struct s_ctx t_ctx;
+typedef struct s_ctx	t_ctx;
 
 typedef struct s_philo
 {
@@ -54,7 +54,6 @@ typedef struct s_ctx
 	long				t_die;
 	long				t_eat;
 	long				t_sleep;
-	long				t_think;
 	long				t_start;
 	long				t_end;
 	bool				f_ready;
@@ -63,13 +62,10 @@ typedef struct s_ctx
 	bool				f_error;
 }	t_ctx;
 
-
-// init
 int		validate(char **argv, int argc);
 t_ctx	*init(char **argv);
 void	init_philo(t_ctx *ctx, int i);
 void	destroy(t_ctx *ctx);
-// rub
 void	simulate(t_ctx *ctx);
 void	wait_threads(t_ctx *ctx);
 void	queue_threads(t_philo *philo, t_ctx *ctx);
@@ -78,7 +74,6 @@ bool	is_end(t_philo *philo, t_ctx *ctx);
 bool	is_dead(t_philo *philo);
 void	register_as_full(t_ctx *ctx);
 bool	everyone_full(t_ctx *ctx, t_philo *philo);
-
 // mutex wrappers
 int		mxinit(pthread_mutex_t *lock, t_ctx *ctx);
 int		mxdestroy(pthread_mutex_t *lock, t_ctx *ctx);

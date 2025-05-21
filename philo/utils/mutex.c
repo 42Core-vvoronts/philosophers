@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:38:48 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/18 10:54:20 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/21 11:50:46 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	mxinit(pthread_mutex_t *lock, t_ctx *ctx)
 {
 	int	code;
-	
+
 	code = pthread_mutex_init(lock, NULL);
 	if (code != SUCCESS)
 		return (ft_exit(FAIL, "pthread_mutex_init()", ctx));
@@ -25,7 +25,7 @@ int	mxinit(pthread_mutex_t *lock, t_ctx *ctx)
 int	mxdestroy(pthread_mutex_t *lock, t_ctx *ctx)
 {
 	int	code;
-	
+
 	code = pthread_mutex_destroy(lock);
 	if (code != SUCCESS)
 		return (ft_exit(FAIL, "pthread_mutex_destroy()", ctx));
@@ -35,7 +35,7 @@ int	mxdestroy(pthread_mutex_t *lock, t_ctx *ctx)
 int	mxlock(pthread_mutex_t *lock, t_ctx *ctx)
 {
 	int	code;
-	
+
 	code = pthread_mutex_lock(lock);
 	if (code != SUCCESS)
 		return (ft_exit(FAIL, "pthread_mutex_lock()", ctx));
@@ -45,7 +45,7 @@ int	mxlock(pthread_mutex_t *lock, t_ctx *ctx)
 int	mxunlock(pthread_mutex_t *lock, t_ctx *ctx)
 {
 	int	code;
-	
+
 	code = pthread_mutex_unlock(lock);
 	if (code != SUCCESS)
 		return (ft_exit(FAIL, "pthread_mutex_unlock()", ctx));
