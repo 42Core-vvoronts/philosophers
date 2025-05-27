@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 15:14:59 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:21:26 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	*routine(t_philo *philo, t_ctx *ctx)
 
 	if (ctx->n_philos == 1)
 		one_philo(philo, ctx);
-	wait_philos_ready(ctx);
+	sync_philos_time(ctx);
 	queue_philos(philo, ctx);
 	while (true)
 	{
