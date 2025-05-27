@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 19:13:35 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:16:13 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ typedef struct s_ctx	t_ctx;
 typedef struct s_philo
 {
 	int					id;
-	pthread_t			pid;
-	pthread_t			tid;
+	int					pid;
 	long				t_last_meal;
 	long				t_remain;
 	long				t_now;
@@ -55,6 +54,7 @@ typedef struct s_philo
 typedef struct s_ctx
 {
 	t_philo				*philos;
+	pthread_t			*observer;
 	sem_t				*forks;
 	sem_t				*die_lock;
 	sem_t				*ful_lock;
@@ -76,21 +76,9 @@ typedef struct s_ctx
 	bool				f_error;
 }	t_ctx;
 
-int		validate(char **argv, int argc);
-t_ctx	*init(char **argv);
-void	init_philo(t_ctx *ctx, int i);
-void	destroy(t_ctx *ctx);
-void	simulate(t_ctx *ctx);
-void	wait_threads(t_ctx *ctx);
-void	queue_threads(t_philo *philo, t_ctx *ctx);
-void	*routine(void *arg);
-void	eating(t_philo *philo, t_ctx *ctx);
-void	sleeping(t_philo *philo, t_ctx *ctx);
-void	thinking(t_philo *philo, t_ctx *ctx);
-bool	is_end(t_philo *philo, t_ctx *ctx);
-bool	is_dead(t_philo *philo);
-void	register_as_full(t_ctx *ctx);
-bool	everyone_full(t_ctx *ctx, t_philo *philo);
+
+
+void	*routine(t_philo *philo, t_ctx *ctx);
 // sem wrappers
 int		sminit(sem_t *sem, unsigned int val, t_ctx *ctx);
 int		smdestroy(sem_t *sem, t_ctx *ctx);

@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 19:14:44 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/27 15:14:59 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,6 @@ void	*one_philo(t_philo *philo, t_ctx *ctx)
 	exit(DIED); 
 }
 
-bool	is_dead(t_philo *philo)
-{
-	if (philo->t_now <= philo->t_last_meal + philo->ctx->t_die)
-		return (false);
-	writedeath(philo);
-	return (true);
-}
-
-void	queue_philos(t_philo *philo, t_ctx *ctx)
-{
-	if (philo->id % 2 == 1 && philo->id == ctx->n_philos)
-		esleep(philo, ctx->t_eat * 2);
-	else if (philo->id % 2 == 1)
-		return ;
-	else
-		esleep(philo, ctx->t_eat * 1);
-}
-
-void	wait_philos_ready(t_ctx *ctx)
-{
-	smwait(ctx->go, ctx);
-	ctx->t_delta = gettime(ctx)- ctx->start;
-	smpost(ctx->uni_lock, ctx);
-}
 /**
  * @brief Routine 
  * 
@@ -59,7 +35,6 @@ void	*routine(t_philo *philo, t_ctx *ctx)
 
 	if (ctx->n_philos == 1)
 		one_philo(philo, ctx);
-
 	wait_philos_ready(ctx);
 	queue_philos(philo, ctx);
 	while (true)

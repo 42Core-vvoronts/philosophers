@@ -6,7 +6,7 @@
 #    By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 10:32:04 by vvoronts          #+#    #+#              #
-#    Updated: 2025/05/21 14:21:16 by vvoronts         ###   ########.fr        #
+#    Updated: 2025/05/27 15:16:43 by vvoronts         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,7 +48,7 @@ SRC 				=	\
 						print.c \
 						strlen.c \
 						time.c \
-						mutex.c \
+						semaphores.c \
 						\
 
 # Object and Dependency files
