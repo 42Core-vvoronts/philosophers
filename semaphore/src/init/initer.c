@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 19:10:19 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:36:17 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ t_ctx	*init(char **argv)
 		return (NULL);
 	save_program_input(ctx, argv);
 	alloc_semaphores(ctx);
+	ctx->observer = (pthread_t *)memalloc(sizeof(pthread_t), ctx);
 	ctx->philos = (t_philo *)memalloc(sizeof(t_philo) * ctx->n_philos, ctx);
 	i = 0;
 	while (i < ctx->n_philos && ctx->f_error == false)
