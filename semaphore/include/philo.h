@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 15:16:13 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:31:35 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,8 @@
 # include <unistd.h>     // write, usleep
 # include <sys/time.h>   // gettimeofday
 # include <stdbool.h>    // bool type
-# include <stdio.h>      // 
+# include <stdio.h>      //
+# include <fcntl.h>
 
 # define MAXPH 200
 # define SUCCESS 0
@@ -56,19 +57,18 @@ typedef struct s_ctx
 	t_philo				*philos;
 	pthread_t			*observer;
 	sem_t				*forks;
+	sem_t				*full;
 	sem_t				*die_lock;
-	sem_t				*ful_lock;
 	sem_t				*uni_lock;
 	sem_t				*write_lock;
 	sem_t				*go;
 	int					n_philos;
-	int					n_full;
 	int					n_meals;
 	long				t_die;
 	long				t_eat;
 	long				t_sleep;
 	long				t_start;
-	long				t_t_delta;
+	long				t_delta;
 	long				t_end;
 	bool				f_ready;
 	bool				f_end;
@@ -78,17 +78,33 @@ typedef struct s_ctx
 
 
 
+int		validate(char **argv, int argc);
+t_ctx	*init(char **argv);
+void    simulate(t_ctx *ctx);
 void	*routine(t_philo *philo, t_ctx *ctx);
+void	eating(t_philo *philo, t_ctx *ctx);
+void	thinking(t_philo *philo);
+void	sleeping(t_philo *philo);
+void	check_death(t_philo *philo);
+void	queue_philos(t_philo *philo, t_ctx *ctx);
+void    kill_all_philos(t_ctx *ctx);
+void	monitor_death(t_ctx *ctx);
+void	*monitor_full(void *arg);
+void	destroy(t_philo *philo, t_ctx *ctx);
+
 // sem wrappers
-int		sminit(sem_t *sem, unsigned int val, t_ctx *ctx);
-int		smdestroy(sem_t *sem, t_ctx *ctx);
-int		smwait(sem_t *sem, t_ctx *ctx);
-int		smpost(sem_t *sem, t_ctx *ctx);
-int		smunlink(const char *name, t_ctx *ctx);
+sem_t	*smopen(const char *name, unsigned int value, t_ctx *ctx);
+void	smclose(sem_t *sem, t_ctx *ctx);
+void	smwait(sem_t *sem, t_ctx *ctx);
+void	smpost(sem_t *sem, t_ctx *ctx);
+void	smunlink(const char *name, t_ctx *ctx);
+//
+void	join_thread(pthread_t *thread, t_ctx *ctx);
+void	create_thread(pthread_t *t, void *(*f)(void *), void *arg, t_ctx *ctx);
 // utils
 void	*memalloc(size_t size, void *ctx);
 void	esleep(t_philo *philo, long t_act);
-int		ft_exit(int err, const char *msg, t_ctx *ctx);
+void	ft_exit(int err, const char *msg, t_ctx *ctx);
 long	ft_atol(const char *str);
 long	ft_strlen(const char *str);
 void	writestatus(t_philo *philo, char *str);

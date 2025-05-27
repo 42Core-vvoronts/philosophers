@@ -1,31 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   think.c                                            :+:      :+:    :+:   */
+/*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/21 11:54:18 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 19:20:50 by vvoronts         ###   ########.fr       */
+/*   Created: 2025/05/20 14:05:13 by vvoronts          #+#    #+#             */
+/*   Updated: 2025/05/27 19:13:26 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-/**
- * @brief Think routine
- * 
- * Time to think is counted during philo init
- * @param philo current philo
- * @param ctx context of programm
- */
-void	thinking(t_philo *philo)
+void	*monitor_full(void *arg)
 {
-	check_death(philo);
-	writestatus(philo, "is thinking");
-	if (philo->t_think == 0)
-		usleep(1);
-	else
-		esleep(philo, philo->t_think);
-	check_death(philo);
+	t_ctx	*ctx;
+	int		i;
+
+	ctx	= (t_ctx *)arg;
+	i = 0;
+	while (i++ < ctx->n_philos)
+		sem_wait(ctx->full);
+	kill_all_philos(ctx);
+	return (NULL);
+}
+
+void	monitor_death(t_ctx *ctx)
+{
+	int		status;
+	pid_t	pid;
+
+	while (1)
+	{
+		pid = waitpid(-1, &status, WNOHANG);
+		if (pid == -1)
+			break ;
+		if (WIFEXITED(status) && WEXITSTATUS(status) == DIED)
+		{
+			kill_all_philos(ctx);
+			break;
+		}
+	}	
 }

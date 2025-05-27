@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 19:09:01 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:10:19 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,12 @@ void	save_program_input(t_ctx *ctx, char **argv)
 
 void	alloc_semaphores(t_ctx *ctx)
 {
-	ctx->die_lock = sminit(SEMDIE, 1, ctx);
-	ctx->ful_lock = sminit(SEMFUL, 1, ctx);
-	ctx->uni_lock = sminit(SEMUNI, 1, ctx);
-	ctx->write_lock = sminit(SEMWRI, 1, ctx);
-	ctx->forks = sminit(SEMFOR, ctx->n_philos, ctx);
-	ctx->go = sminit(SEMGO, 0, ctx);
+	ctx->die_lock = smopen(SEMDIE, 1, ctx);
+	ctx->full = smopen(SEMFUL, 1, ctx);
+	ctx->uni_lock = smopen(SEMUNI, 1, ctx);
+	ctx->write_lock = smopen(SEMWRI, 1, ctx);
+	ctx->forks = smopen(SEMFOR, ctx->n_philos, ctx);
+	ctx->go = smopen(SEMGO, 0, ctx);
 }
 
 void	*memalloc(size_t size, void *ctx)

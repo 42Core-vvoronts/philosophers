@@ -6,30 +6,11 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 15:23:34 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/27 19:19:52 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-static void	create_thread(pthread_t *thread, void *(*f)(void *), void *arg, t_ctx *ctx)
-{
-	int		code;
-
-	code = pthread_create(&thread, NULL, f, arg);
-	if (code != SUCCESS)
-		ft_exit(FAIL, "pthread_create", ctx);
-}
-
-static void	join_thread(pthread_t *thread, t_ctx *ctx)
-{
-	int		code;
-
-	code = pthread_join(*thread, NULL);
-	if (code != SUCCESS)
-		ft_exit(code, "pthread_join", ctx);
-}
-
 
 void    kill_all_philos(t_ctx *ctx)
 {
@@ -44,33 +25,15 @@ void    kill_all_philos(t_ctx *ctx)
 	}
 }
 
-bool	is_dead(t_philo *philo)
-{
-	if (philo->t_now <= philo->t_last_meal + philo->ctx->t_die)
-		return (false);
-	writedeath(philo);
-	return (true);
-}
-
-void	queue_philos(t_philo *philo, t_ctx *ctx)
-{
-	if (philo->id % 2 == 1 && philo->id == ctx->n_philos)
-		esleep(philo, ctx->t_eat * 2);
-	else if (philo->id % 2 == 1)
-		return ;
-	else
-		esleep(philo, ctx->t_eat * 1);
-}
-
-void	sync_philos_time(t_ctx *philo)
-{
-	smwait(SEMGO, ctx);
-	ctx->t_delta = gettime(ctx)-ctx->t_start;
-	smpost(SEMGO, ctx);
+// void	sync_philos_time(t_ctx *philo)
+// {
+// 	smwait(SEMGO, ctx);
+// 	ctx->t_delta = gettime(ctx)-ctx->t_start;
+// 	smpost(SEMGO, ctx);
 	
-}
+// }
 
-void	run_simulation(t_ctx *ctx)
+static void	create_philos(t_ctx *ctx)
 {
 	int		i;
 	pid_t	pid;
@@ -85,43 +48,13 @@ void	run_simulation(t_ctx *ctx)
 		{
 			kill_all_philos(ctx);
 			ft_exit(FAIL, "fork", ctx);
-			return ;
 		}
 		else if (pid == 0)
-			routine(ctx->philos[i], ctx);
+			routine(&ctx->philos[i], ctx);
 		ctx->philos[i].pid = pid;
 	}
-	smpost(SEMGO, ctx);
+	// smpost(SEMGO, ctx);
 }
-
-void	*monitor_full(void *arg)
-{
-	t_ctx *ctx = (t_ctx *)arg;
-	for (int i = 0; i < ctx->n_philos; i++)
-		sem_wait(ctx->ful_lock);
-	kill_all_philos(ctx);
-	return (NULL);
-}
-
-void	monitor_death(t_ctx *ctx)
-{
-	int		i;
-	int		status;
-	pid_t	pid;
-
-	while (1)
-	{
-		pid = waitpid(-1, &status, WNOHANG);
-		if (pid == -1)
-			break ;
-		if (WIFEXITED(status) && WEXITSTATUS(status) == DIED)
-		{
-			kill_all_philos(ctx);
-			break;
-		}
-	}	
-}
-
 
 /**
  * @brief Creates and joins threads for each philosopher 
@@ -130,8 +63,8 @@ void	monitor_death(t_ctx *ctx)
  */
 void    simulate(t_ctx *ctx)
 {
-	create_thread(ctx->observer, monitor_full, ctx, ctx);
-	run_simulation(ctx);
+	create_thread(ctx->observer, &monitor_full, ctx, ctx);
+	create_philos(ctx);
 	monitor_death(ctx);
 	join_thread(ctx->observer, ctx);
 }
