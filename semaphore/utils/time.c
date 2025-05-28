@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 18:56:16 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/21 11:50:22 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:08:16 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	esleep(t_philo *philo, long t_act)
 		while (gettime(philo->ctx) < t_wake)
 			usleep(10);
 		writedeath(philo);
-		return ;
+		// ft_exit(DIED, NULL, philo->ctx);
+		// return ;
 	}
 }
