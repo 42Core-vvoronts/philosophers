@@ -6,13 +6,13 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 16:39:17 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:47:04 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void    kill_all_philos(t_ctx *ctx)
+void	kill_all_philos(t_ctx *ctx)
 {
 	int	i;
 
@@ -30,7 +30,6 @@ static void	create_philos(t_ctx *ctx)
 	int		i;
 	pid_t	pid;
 
-	
 	i = 0;
 	ctx->t_start = gettime(ctx);
 	while (i < ctx->n_philos)

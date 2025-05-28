@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 15:30:00 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:44:47 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*one_philo(t_philo *philo, t_ctx *ctx)
 		usleep(1);
 	smpost(ctx->forks, philo->ctx);
 	writedeath(philo);
-	exit(DIED); 
+	exit(DIED);
 }
 
 void	sync_philos_time(t_philo *philo)
@@ -49,7 +49,6 @@ void	check_death(t_philo *philo)
 	if (philo->t_now <= philo->t_last_meal + philo->ctx->t_die)
 		return ;
 	writedeath(philo);
-	// ft_exit(DIED, NULL, philo->ctx);
 }
 
 /**

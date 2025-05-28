@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 11:54:10 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 16:36:23 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:47:16 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,5 @@ void	eating(t_philo *philo, t_ctx *ctx)
 	esleep(philo, ctx->t_eat);
 	smpost(ctx->forks, ctx);
 	smpost(ctx->forks, ctx);
-	check_death(philo);	
+	check_death(philo);
 }

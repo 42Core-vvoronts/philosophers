@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:38:48 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 19:31:58 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:44:17 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ sem_t	*smopen(const char *name, unsigned int value, t_ctx *ctx)
 {
 	sem_t	*sem;
 
-	sem	= sem_open(name, O_CREAT, 0644, value);
-	if (sem == SEM_FAILED) 
+	sem = sem_open(name, O_CREAT, 0644, value);
+	if (sem == SEM_FAILED)
 		ft_exit(FAIL, "sem_open", ctx);
 	sem_unlink(name);
 	return (sem);

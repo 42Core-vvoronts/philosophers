@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 15:18:03 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:48:10 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,23 +72,20 @@ typedef struct s_ctx
 	long				t_end;
 }	t_ctx;
 
-
-
 int		validate(char **argv, int argc);
 t_ctx	*init(char **argv);
-void    simulate(t_ctx *ctx);
+void	simulate(t_ctx *ctx);
 void	*routine(t_philo *philo);
 void	eating(t_philo *philo, t_ctx *ctx);
 void	thinking(t_philo *philo);
 void	sleeping(t_philo *philo);
 void	check_death(t_philo *philo);
 void	queue_philos(t_philo *philo, t_ctx *ctx);
-void    kill_all_philos(t_ctx *ctx);
+void	kill_all_philos(t_ctx *ctx);
 void	monitor_death(t_ctx *ctx);
 void	monitor_meals(t_ctx *ctx);
 void	*monitor_full(void *arg);
 void	destroy(t_philo *philo, t_ctx *ctx);
-
 // sem wrappers
 sem_t	*smopen(const char *name, unsigned int value, t_ctx *ctx);
 void	smclose(sem_t *sem, t_ctx *ctx);
