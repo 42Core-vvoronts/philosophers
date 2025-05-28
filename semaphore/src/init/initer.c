@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 19:36:17 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:19:58 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	save_program_input(t_ctx *ctx, char **argv)
 
 void	alloc_semaphores(t_ctx *ctx)
 {
-	ctx->die_lock = smopen(SEMDIE, 1, ctx);
-	ctx->full = smopen(SEMFUL, 1, ctx);
-	ctx->uni_lock = smopen(SEMUNI, 1, ctx);
-	ctx->write_lock = smopen(SEMWRI, 1, ctx);
-	ctx->forks = smopen(SEMFOR, ctx->n_philos, ctx);
+	ctx->semdie = smopen(SEMDIE, 1, ctx);
+	ctx->semful = smopen(SEMFUL, 1, ctx);
+	ctx->semuni = smopen(SEMUNI, 1, ctx);
+	ctx->semwri = smopen(SEMWRI, 1, ctx);
+	ctx->forks = smopen(SEMFORK, ctx->n_philos, ctx);
 	ctx->go = smopen(SEMGO, 0, ctx);
 }
 
@@ -38,11 +38,7 @@ void	*memalloc(size_t size, void *ctx)
 
 	ptr = malloc(size);
 	if (!ptr)
-	{
-		if (ctx)
-			((t_ctx *)ctx)->f_error = true;
-		return (NULL);
-	}
+		ft_exit(FAIL, "malloc", ctx);
 	memset(ptr, 0, size);
 	return (ptr);
 }
@@ -92,9 +88,7 @@ t_ctx	*init(char **argv)
 	ctx->observer = (pthread_t *)memalloc(sizeof(pthread_t), ctx);
 	ctx->philos = (t_philo *)memalloc(sizeof(t_philo) * ctx->n_philos, ctx);
 	i = 0;
-	while (i < ctx->n_philos && ctx->f_error == false)
+	while (i < ctx->n_philos)
 		init_philo(ctx, i++);
-	if (ctx->f_error == true)
-		return (NULL);
 	return (ctx);
 }

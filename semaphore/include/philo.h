@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 11:54:56 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:18:03 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@
 # define FAIL -1
 # define FULL 1
 # define DIED 2
-# define SEMFOR "/forks"
+# define SEMFORK "/forks"
 # define SEMDIE "/die"
 # define SEMWRI "/write"
 # define SEMFUL "/full"
@@ -57,10 +57,10 @@ typedef struct s_ctx
 	t_philo				*philos;
 	pthread_t			*observer;
 	sem_t				*forks;
-	sem_t				*full;
-	sem_t				*die_lock;
-	sem_t				*uni_lock;
-	sem_t				*write_lock;
+	sem_t				*semful;
+	sem_t				*semdie;
+	sem_t				*semuni;
+	sem_t				*semwri;
 	sem_t				*go;
 	int					n_philos;
 	int					n_meals;
@@ -70,10 +70,6 @@ typedef struct s_ctx
 	long				t_start;
 	long				t_delta;
 	long				t_end;
-	bool				f_ready;
-	bool				f_end;
-	bool				f_death;
-	bool				f_error;
 }	t_ctx;
 
 
@@ -89,6 +85,7 @@ void	check_death(t_philo *philo);
 void	queue_philos(t_philo *philo, t_ctx *ctx);
 void    kill_all_philos(t_ctx *ctx);
 void	monitor_death(t_ctx *ctx);
+void	monitor_meals(t_ctx *ctx);
 void	*monitor_full(void *arg);
 void	destroy(t_philo *philo, t_ctx *ctx);
 
