@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 15:16:21 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:39:17 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	create_philos(t_ctx *ctx)
 void	simulate(t_ctx *ctx)
 {
 	create_philos(ctx);
-	if (ctx->n_meals > 0)
+	if (ctx->n_meals > 0 && ctx->n_philos > 1)
 		monitor_meals(ctx);
 	monitor_death(ctx);
 }
