@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 14:24:50 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:16:21 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,6 @@ void    kill_all_philos(t_ctx *ctx)
 		i++;
 	}
 }
-
-// void	sync_philos_time(t_ctx *philo)
-// {
-// 	smwait(SEMGO, ctx);
-// 	ctx->t_delta = gettime(ctx)-ctx->t_start;
-// 	smpost(SEMGO, ctx);
-	
-// }
 
 static void	create_philos(t_ctx *ctx)
 {
@@ -55,7 +47,7 @@ static void	create_philos(t_ctx *ctx)
 			routine(&ctx->philos[i]);
 		i++;
 	}
-	// smpost(SEMGO, ctx);
+	smpost(ctx->go, ctx);
 }
 
 /**
@@ -63,10 +55,10 @@ static void	create_philos(t_ctx *ctx)
  * 
  * @param ctx Context of programm
  */
-void    simulate(t_ctx *ctx)
+void	simulate(t_ctx *ctx)
 {
-	create_thread(ctx->observer, &monitor_full, ctx, ctx);
 	create_philos(ctx);
+	if (ctx->n_meals > 0)
+		monitor_meals(ctx);
 	monitor_death(ctx);
-	join_thread(ctx->observer, ctx);
 }

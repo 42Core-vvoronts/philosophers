@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 11:54:43 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 15:20:15 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,16 @@ void	*one_philo(t_philo *philo, t_ctx *ctx)
 	smpost(ctx->forks, philo->ctx);
 	writedeath(philo);
 	exit(DIED); 
+}
+
+void	sync_philos_time(t_philo *philo)
+{
+	t_ctx	*ctx;
+
+	ctx = philo->ctx;
+	smwait(ctx->go, ctx);
+	ctx->t_delta = gettime(ctx) - ctx->t_start;
+	smpost(ctx->go, ctx);
 }
 
 void	queue_philos(t_philo *philo, t_ctx *ctx)
@@ -54,20 +64,13 @@ void	*routine(t_philo *philo)
 	ctx = philo->ctx;
 	if (ctx->n_philos == 1)
 		one_philo(philo, ctx);
-	// sync_philos_time(ctx);
+	sync_philos_time(philo);
 	queue_philos(philo, ctx);
 	while (true)
 	{
 		eating(philo, ctx);
 		sleeping(philo);
 		thinking(philo);
-		smwait(ctx->die_lock, ctx);
-		if (ctx->f_end)
-		{
-			smpost(ctx->die_lock, ctx);
-			break ;
-		}
-		smpost(ctx->die_lock, ctx);
 	}
 	return (NULL);
 }

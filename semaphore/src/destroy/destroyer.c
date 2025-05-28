@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:23 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 19:26:19 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:35:15 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ void	destroy(t_philo *philo, t_ctx *ctx)
 	if (!ctx)
 		return ;
 	// free_forks(ctx);
-	// free_lock(ctx->die_lock, ctx);
-	// free_lock(ctx->uni_lock, ctx);
-	// free_lock(ctx->write_lock, ctx);
+	// free_lock(ctx->semdie, ctx);
+	// free_lock(ctx->semuni, ctx);
+	// free_lock(ctx->semwri, ctx);
 	if (philo)
 		free(philo);
 	if (ctx->philos)
