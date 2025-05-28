@@ -6,50 +6,27 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:23 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 14:35:15 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:50:32 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-// void	free_forks(t_ctx *ctx)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (ctx->forks)
-// 	{
-// 		while (i < ctx->n_philos)
-// 		{
-// 			mxdestroy(&ctx->forks[i], ctx);
-// 			i++;
-// 		}
-// 		free(ctx->forks);
-// 		ctx->forks = NULL;
-// 	}
-// }
-
-// void	free_lock(pthread_mutex_t *lock, t_ctx *ctx)
-// {
-// 	if (lock)
-// 	{
-// 		smdestroy(lock, ctx);
-// 		free(lock);
-// 		lock = NULL;
-// 	}
-// }
-
-void	destroy(t_philo *philo, t_ctx *ctx)
+void	destroy(t_ctx *ctx)
 {
 	if (!ctx)
 		return ;
-	// free_forks(ctx);
-	// free_lock(ctx->semdie, ctx);
-	// free_lock(ctx->semuni, ctx);
-	// free_lock(ctx->semwri, ctx);
-	if (philo)
-		free(philo);
+	smclose(ctx->forks);
+	smclose(ctx->semwri);
+	smclose(ctx->semful);
+	smclose(ctx->semgo);
+	smunlink(SEMFUL);
+	smunlink(SEMWRI);
+	smunlink(SEMFORK);
+	smunlink(SEMGO);
 	if (ctx->philos)
 		free(ctx->philos);
+	if (ctx->observer)
+		free(ctx->observer);
 	free(ctx);
 }

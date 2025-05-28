@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 16:47:04 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:43:22 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ static void	create_philos(t_ctx *ctx)
 		if (pid == -1)
 		{
 			kill_all_philos(ctx);
-			ft_exit(FAIL, "fork", ctx);
+			destroy(ctx);
+			ft_exit(FAIL, "fork");
 		}
 		else if (pid != 0)
 			ctx->philos[i].pid = pid;
@@ -46,7 +47,7 @@ static void	create_philos(t_ctx *ctx)
 			routine(&ctx->philos[i]);
 		i++;
 	}
-	smpost(ctx->go, ctx);
+	smpost(ctx->semgo, ctx);
 }
 
 /**

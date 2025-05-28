@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 16:35:38 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:39:26 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,10 @@ void	save_program_input(t_ctx *ctx, char **argv)
 
 void	alloc_semaphores(t_ctx *ctx)
 {
-	ctx->semdie = smopen(SEMDIE, 1, ctx);
 	ctx->semful = smopen(SEMFUL, 0, ctx);
-	ctx->semuni = smopen(SEMUNI, 1, ctx);
 	ctx->semwri = smopen(SEMWRI, 1, ctx);
 	ctx->forks = smopen(SEMFORK, ctx->n_philos, ctx);
-	ctx->go = smopen(SEMGO, 0, ctx);
+	ctx->semgo = smopen(SEMGO, 0, ctx);
 }
 
 void	*memalloc(size_t size, void *ctx)
@@ -38,7 +36,10 @@ void	*memalloc(size_t size, void *ctx)
 
 	ptr = malloc(size);
 	if (!ptr)
-		ft_exit(FAIL, "malloc", ctx);
+	{
+		destroy(ctx);
+		ft_exit(FAIL, "malloc");
+	}
 	memset(ptr, 0, size);
 	return (ptr);
 }

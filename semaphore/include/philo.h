@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 16:49:29 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 17:52:16 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <stdbool.h>    // bool type
 # include <stdio.h>      //
 # include <fcntl.h>
+# include <errno.h>
 
 # define MAXPH 200
 # define SUCCESS 0
@@ -32,10 +33,8 @@
 # define FULL 1
 # define DIED 2
 # define SEMFORK "/forks"
-# define SEMDIE "/die"
 # define SEMWRI "/write"
 # define SEMFUL "/full"
-# define SEMUNI "/universal"
 # define SEMGO "/go"
 
 typedef struct s_ctx	t_ctx;
@@ -58,10 +57,8 @@ typedef struct s_ctx
 	pthread_t			*observer;
 	sem_t				*forks;
 	sem_t				*semful;
-	sem_t				*semdie;
-	sem_t				*semuni;
 	sem_t				*semwri;
-	sem_t				*go;
+	sem_t				*semgo;
 	int					n_philos;
 	int					n_meals;
 	long				t_die;
@@ -83,20 +80,21 @@ void	kill_all_philos(t_ctx *ctx);
 void	monitor_death(t_ctx *ctx);
 void	monitor_meals(t_ctx *ctx);
 void	*monitor_full(void *arg);
-void	destroy(t_philo *philo, t_ctx *ctx);
+void	destroy(t_ctx *ctx);
+// void	destroy_philo(t_philo *philo);
 // sem wrappers
 sem_t	*smopen(const char *name, unsigned int value, t_ctx *ctx);
-void	smclose(sem_t *sem, t_ctx *ctx);
 void	smwait(sem_t *sem, t_ctx *ctx);
 void	smpost(sem_t *sem, t_ctx *ctx);
-void	smunlink(const char *name, t_ctx *ctx);
+void	smclose(sem_t *sem);
+void	smunlink(const char *name);
 //
 void	join_thread(pthread_t *thread, t_ctx *ctx);
 void	create_thread(pthread_t *t, void *(*f)(void *), void *arg, t_ctx *ctx);
 // utils
 void	*memalloc(size_t size, void *ctx);
 void	esleep(t_philo *philo, long t_act);
-void	ft_exit(int err, const char *msg, t_ctx *ctx);
+void	ft_exit(int err, const char *msg);
 long	ft_atol(const char *str);
 long	ft_strlen(const char *str);
 void	writestatus(t_philo *philo, char *str);
