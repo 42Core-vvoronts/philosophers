@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:05:13 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 15:17:28 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 16:36:30 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ void	*monitor_full(void *arg)
 
 	ctx	= (t_ctx *)arg;
 	i = 0;
-	while (i++ < ctx->n_philos)
-		sem_wait(ctx->semful);
+	while (i < ctx->n_philos)
+	{
+		smwait(ctx->semful, ctx);
+		i++;
+	}
 	kill_all_philos(ctx);
 	return (NULL);
 }
