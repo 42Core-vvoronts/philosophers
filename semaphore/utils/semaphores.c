@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:38:48 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 17:51:44 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:08:54 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ sem_t	*smopen(const char *name, unsigned int value, t_ctx *ctx)
 		destroy(ctx);
 		ft_exit(FAIL, "sem_open");
 	}
-	sem_unlink(name);
+	smunlink(name);
 	return (sem);
 }
 
