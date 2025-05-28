@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 17:00:04 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 19:41:57 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	sync_philos_time(t_philo *philo)
 	ctx = philo->ctx;
 	smwait(ctx->semgo, ctx);
 	smpost(ctx->semgo, ctx);
+	ctx->t_start = gettime(ctx);
 }
 
 void	queue_philos(t_philo *philo, t_ctx *ctx)
