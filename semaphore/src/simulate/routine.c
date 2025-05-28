@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:19:03 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 19:21:27 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:54:43 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,11 @@ void	check_death(t_philo *philo)
  * 
  * @param arg pointer to philo who runs routine
  */
-void	*routine(t_philo *philo, t_ctx *ctx)
+void	*routine(t_philo *philo)
 {
+	t_ctx	*ctx;
+
+	ctx = philo->ctx;
 	if (ctx->n_philos == 1)
 		one_philo(philo, ctx);
 	// sync_philos_time(ctx);

@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 19:43:39 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 14:24:50 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static void	create_philos(t_ctx *ctx)
 	
 	i = 0;
 	ctx->t_start = gettime(ctx);
-	while (i++ < ctx->n_philos)
+	while (i < ctx->n_philos)
 	{
 		pid = fork();
 		if (pid == -1)
@@ -49,9 +49,11 @@ static void	create_philos(t_ctx *ctx)
 			kill_all_philos(ctx);
 			ft_exit(FAIL, "fork", ctx);
 		}
+		else if (pid != 0)
+			ctx->philos[i].pid = pid;
 		else if (pid == 0)
-			routine(&ctx->philos[i], ctx);
-		ctx->philos[i].pid = pid;
+			routine(&ctx->philos[i]);
+		i++;
 	}
 	// smpost(SEMGO, ctx);
 }

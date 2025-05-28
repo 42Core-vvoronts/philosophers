@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/27 19:31:35 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 11:54:56 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_ctx
 int		validate(char **argv, int argc);
 t_ctx	*init(char **argv);
 void    simulate(t_ctx *ctx);
-void	*routine(t_philo *philo, t_ctx *ctx);
+void	*routine(t_philo *philo);
 void	eating(t_philo *philo, t_ctx *ctx);
 void	thinking(t_philo *philo);
 void	sleeping(t_philo *philo);
