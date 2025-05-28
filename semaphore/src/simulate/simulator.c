@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 13:23:39 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 17:43:22 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:51:12 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ void	simulate(t_ctx *ctx)
 {
 	create_philos(ctx);
 	if (ctx->n_meals > 0 && ctx->n_philos > 1)
-		monitor_meals(ctx);
+		create_thread(ctx->observer, &monitor_full, ctx, ctx);
 	monitor_death(ctx);
+	if (ctx->n_meals > 0 && ctx->n_philos > 1)
+		join_thread(ctx->observer, ctx);	
 }

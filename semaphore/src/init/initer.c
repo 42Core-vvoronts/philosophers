@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:12 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 17:39:26 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:50:03 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	alloc_semaphores(t_ctx *ctx)
 {
 	ctx->semful = smopen(SEMFUL, 0, ctx);
 	ctx->semwri = smopen(SEMWRI, 1, ctx);
+	ctx->semdie = smopen(SEMDIE, 1, ctx);
 	ctx->forks = smopen(SEMFORK, ctx->n_philos, ctx);
 	ctx->semgo = smopen(SEMGO, 0, ctx);
 }

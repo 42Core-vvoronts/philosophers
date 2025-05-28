@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:05:13 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 16:46:18 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:54:17 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,13 @@ void	*monitor_full(void *arg)
 	while (i < ctx->n_philos)
 	{
 		smwait(ctx->semful, ctx);
+		if (ctx->f_death == true)
+			break ;
 		i++;
 	}
-	kill_all_philos(ctx);
+	if (ctx->f_death == false)
+		kill_all_philos(ctx);
 	return (NULL);
-}
-
-void	monitor_meals(t_ctx *ctx)
-{
-	create_thread(ctx->observer, &monitor_full, ctx, ctx);
-	join_thread(ctx->observer, ctx);
 }
 
 void	monitor_death(t_ctx *ctx)
@@ -46,6 +43,8 @@ void	monitor_death(t_ctx *ctx)
 			break ;
 		if (WIFEXITED(status) && WEXITSTATUS(status) == DIED)
 		{
+			ctx->f_death = true;
+			smpost(ctx->semful, ctx);
 			kill_all_philos(ctx);
 			break ;
 		}

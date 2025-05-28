@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:32:26 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 17:52:16 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:52:52 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@
 # define SEMFORK "/forks"
 # define SEMWRI "/write"
 # define SEMFUL "/full"
+# define SEMDIE "/die"
 # define SEMGO "/go"
 
 typedef struct s_ctx	t_ctx;
@@ -58,6 +59,7 @@ typedef struct s_ctx
 	sem_t				*forks;
 	sem_t				*semful;
 	sem_t				*semwri;
+	sem_t				*semdie;
 	sem_t				*semgo;
 	int					n_philos;
 	int					n_meals;
@@ -65,6 +67,7 @@ typedef struct s_ctx
 	long				t_eat;
 	long				t_sleep;
 	long				t_start;
+	bool				f_death;
 }	t_ctx;
 
 int		validate(char **argv, int argc);
@@ -78,10 +81,8 @@ void	check_death(t_philo *philo);
 void	queue_philos(t_philo *philo, t_ctx *ctx);
 void	kill_all_philos(t_ctx *ctx);
 void	monitor_death(t_ctx *ctx);
-void	monitor_meals(t_ctx *ctx);
 void	*monitor_full(void *arg);
 void	destroy(t_ctx *ctx);
-// void	destroy_philo(t_philo *philo);
 // sem wrappers
 sem_t	*smopen(const char *name, unsigned int value, t_ctx *ctx);
 void	smwait(sem_t *sem, t_ctx *ctx);

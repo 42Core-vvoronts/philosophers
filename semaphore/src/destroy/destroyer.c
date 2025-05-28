@@ -6,7 +6,7 @@
 /*   By: vvoronts <vvoronts@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 10:57:23 by vvoronts          #+#    #+#             */
-/*   Updated: 2025/05/28 17:50:32 by vvoronts         ###   ########.fr       */
+/*   Updated: 2025/05/28 18:50:19 by vvoronts         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,11 @@ void	destroy(t_ctx *ctx)
 	smclose(ctx->forks);
 	smclose(ctx->semwri);
 	smclose(ctx->semful);
+	smclose(ctx->semdie);
 	smclose(ctx->semgo);
 	smunlink(SEMFUL);
 	smunlink(SEMWRI);
+	smunlink(SEMDIE);
 	smunlink(SEMFORK);
 	smunlink(SEMGO);
 	if (ctx->philos)
