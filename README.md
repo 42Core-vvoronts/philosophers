@@ -2,9 +2,6 @@
 
 Two implementations of the Dining philosophers problem:
 
-> [!WARNING]
-> Part with semaphores is not finished yet
-
 - Thread-based implementation using mutexes
 - Process-based implementation using semaphores
 
@@ -12,10 +9,17 @@ Two implementations of the Dining philosophers problem:
 
 The Dining Philosophers problem is a classic synchronization problem in computer science. This project provides an implementation of the problem using multithreading and multiprocessing to simulate the behavior of philosophers dining and thinking.
 
-## Features
+## Solution Overview
 
-- Simulates the Dining Philosophers problem.
-- Configurable number of philosophers and timing parameters.
+To prevent deadlocks and ensure fairness, the implementation combines 3 techniques:
+
+1. **Resource hierarchy** — Philosophers always pick the lower-indexed fork first.
+2. **Asymmetric execution** — Even and odd philosophers eat in turn to reduce contention.
+3. **Staggered start** — N−1 philosophers are allowed to eat in the first wave; last odd-indexed philosopher waits briefly to start a second wave.
+
+## Testing
+
+To test this project, I built a custom tester: [philotester🥢](https://github.com/VICXPTRV/philotester). 
 
 ## Building
 
@@ -29,18 +33,13 @@ To install and run the project, follow these steps:
 2. Navigate to the project directory:
 
    ```sh
-   cd philosophers/mutex
+   cd philosophers/mutex && make
    ```
 
    or
 
    ```sh
-   cd philosophers/semaphore
-   ```
-3. Compile the project:
-
-   ```sh
-   make
+   cd philosophers/semaphore && make
    ```
 
 ## Usage
@@ -54,5 +53,14 @@ To run the program, use the following command:
 Example:
 
 ```sh
-./philo 5 800 200 200 7
+./philo 1 800 200 200 # Philo should die
+```
+```sh
+./philo 5 800 200 200 # No philo should die
+```
+```sh
+./philo 5 800 200 200 7 # No philo should die and simulation should stop after 7 meals
+```
+```sh
+./philo 4 310 200 100 # Philo should die
 ```
